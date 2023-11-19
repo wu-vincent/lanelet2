@@ -1,12 +1,30 @@
 cmake_minimum_required(VERSION 3.5)
 project(lanelet2)
 
-enable_testing()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED)
 
-#include_directories(lanelet2_core/include lanelet2_io/include lanelet2_projection/include lanelet2_traffic_rules/include
-#        lanelet2_routing/include lanelet2_validation/include)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+if (MSVC)
+    add_compile_definitions(_USE_MATH_DEFINES)
+endif ()
+
+option(LANELET2_ENABLE_TESTS "Build the testing tree." OFF)
+if (LANELET2_ENABLE_TESTS)
+    enable_testing()
+endif ()
+
+
+#include_directories(
+#        lanelet2_core/include
+#        lanelet2_io/include
+#        lanelet2_projection/include
+#        lanelet2_traffic_rules/include
+#        lanelet2_routing/include
+#        lanelet2_validation/include)
+
 add_subdirectory(lanelet2_core)
-#add_subdirectory(lanelet2_io)
+add_subdirectory(lanelet2_io)
 #add_subdirectory(lanelet2_projection)
 #add_subdirectory(lanelet2_traffic_rules)
 #add_subdirectory(lanelet2_routing)
