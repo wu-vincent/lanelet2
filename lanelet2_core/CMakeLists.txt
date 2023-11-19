@@ -82,6 +82,7 @@ install(TARGETS ${PROJECT_NAME}
 #    mrt_add_tests(test)
 #    mrt_add_nosetests(test)
 #endif ()
+include(GoogleTest)
 find_package(GTest REQUIRED)
 file(GLOB PROJECT_SOURCE_FILES_test "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
 add_executable("${PROJECT_NAME}-test" ${PROJECT_SOURCE_FILES_test})
