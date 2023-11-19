@@ -1,11 +1,15 @@
 #pragma once
+#if defined __GNUC__
 #pragma GCC diagnostic push
-#if defined __GNUC__ && (__GNUC__ >= 6)
+#if (__GNUC__ >= 6)
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 #pragma GCC diagnostic ignored "-Wint-in-bool-context"
 #endif
+#endif
 #include <Eigen/Core>
+#if defined __GNUC__
 #pragma GCC diagnostic pop
+#endif
 #include <utility>
 
 #include "lanelet2_core/Forward.h"
@@ -161,7 +165,10 @@ class ConstPoint2d : public ConstPrimitive<PointData> {
 
   //! @brief Construct from an id and a point
   ConstPoint2d(Id id, const BasicPoint3d& point, const AttributeMap& attributes = AttributeMap())
-      : ConstPrimitive<PointData>{std::make_shared<PointData>(id, point, attributes)} {}  // NOLINT
+      : ConstPrimitive<PointData> {
+    std::make_shared<PointData>(id, point, attributes)
+  }
+  {}  // NOLINT
 
   //! @brief Construct from an id and coordinates
   /**
@@ -170,8 +177,11 @@ class ConstPoint2d : public ConstPrimitive<PointData> {
    */
   explicit ConstPoint2d(Id id = InvalId, double x = 0., double y = 0., double z = 0.,
                         const AttributeMap& attributes = AttributeMap())
-      : ConstPrimitive<PointData>{std::make_shared<PointData>(  // NOLINT
-            id, BasicPoint3d(x, y, z), attributes)} {}
+      : ConstPrimitive<PointData> {
+    std::make_shared<PointData>(  // NOLINT
+        id, BasicPoint3d(x, y, z), attributes)
+  }
+  {}
 
   //! A ConstPoint 2d is implicitly convertible to a normal 2d point
   operator BasicPoint2d() const noexcept {  // NOLINT

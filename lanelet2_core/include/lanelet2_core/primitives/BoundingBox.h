@@ -1,15 +1,19 @@
 #pragma once
 
+#if defined __GNUC__
 #pragma GCC diagnostic push
-#if defined __GNUC__ && (__GNUC__ >= 6)
+#if (__GNUC__ >= 6)
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 #pragma GCC diagnostic ignored "-Wint-in-bool-context"
+#endif
 #endif
 #include <Eigen/Geometry>
 
 #include "lanelet2_core/primitives/Point.h"
 #include "lanelet2_core/primitives/Traits.h"
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 
 namespace lanelet {
 
