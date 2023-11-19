@@ -74,8 +74,8 @@ TEST_F(LaneletTest, id) {  // NOLINT
 }
 
 TEST_F(LaneletTest, nullptrConstruct) {                                      // NOLINT
-  EXPECT_THROW(Lanelet(std::shared_ptr<LaneletData>()), NullptrError);       // NOLINT
-  EXPECT_THROW(ConstLanelet(std::shared_ptr<LaneletData>()), NullptrError);  // NOLINT
+  EXPECT_THROW(Lanelet(std::shared_ptr<LaneletData>(nullptr)), NullptrError);       // NOLINT
+  EXPECT_THROW(ConstLanelet(std::shared_ptr<LaneletData>(nullptr)), NullptrError);  // NOLINT
 }
 
 TEST_F(LaneletTest, bounds) {  // NOLINT
