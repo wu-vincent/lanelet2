@@ -334,7 +334,7 @@ Optional<PathT> shortestPathImpl(const PrimT& from, const PrimT& to, RoutingCost
     return {};
   }
   auto filteredGraph =
-      withLaneChanges
+      withLaneChanges  //
           ? withAreas ? graph.withAreasAndLaneChanges(routingCostId) : graph.withLaneChanges(routingCostId)
           : withAreas ? graph.withAreasWithoutLaneChanges(routingCostId) : graph.withoutLaneChanges(routingCostId);
   DijkstraStyleSearch<FilteredRoutingGraph> search(filteredGraph);

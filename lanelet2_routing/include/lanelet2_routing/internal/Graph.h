@@ -99,7 +99,8 @@ struct EdgeCostFilter {
       pmIds_;  ///< Property map to the routing cost IDs of the edges
 };
 
-using LaneletOrAreaToVertex = std::unordered_map<ConstLaneletOrArea, std::uint32_t>;
+// using LaneletOrAreaToVertex = std::unordered_map<ConstLaneletOrArea, std::uint32_t>;
+using LaneletOrAreaToVertex = std::unordered_map<ConstLaneletOrArea, size_t>;
 using FilteredGraphDesc = std::pair<size_t, RelationType>;
 
 /// @brief Manages the actual routing graph and provieds different views on the edges (lazily computed)

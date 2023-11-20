@@ -124,10 +124,9 @@ inline Area setUpArea(int& num, const std::string& type = AttributeValueString::
 class Tempfile {
  public:
   explicit Tempfile(std::string name) {
-    boost::filesystem::path dir = boost::filesystem::temp_directory_path() / "lanelet2_io_test.XXXXXX";
-    if (!boost::filesystem::exists(dir)) {
-      bool created = boost::filesystem::create_directory(dir);
-      if (!created) {
+    auto dir = fs::temp_directory_path() / "lanelet2_io_test.XXXXXX";
+    if (!exists(dir)) {
+      if (!create_directory(dir)) {
         throw lanelet::LaneletError("Failed to crate temporary directory");
       }
     }

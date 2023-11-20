@@ -56,7 +56,7 @@ find_package(Boost REQUIRED)
 find_package(pugixml REQUIRED)
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES_SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core Boost::boost Boost::filesystem Boost::serialization pugixml::pugixml)
+target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core Boost::filesystem Boost::serialization pugixml::pugixml)
 
 #############
 ## Install ##
