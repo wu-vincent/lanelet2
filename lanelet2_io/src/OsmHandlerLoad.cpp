@@ -408,7 +408,7 @@ void registerIds(const MapT& map) {
 }
 
 void testAndPrintLocaleWarning(ErrorMessages& errors) {
-  auto* decimalPoint = std::localeconv()->decimal_point;
+  auto* decimalPoint = localeconv()->decimal_point;
   if (decimalPoint == nullptr || *decimalPoint != '.') {
     std::stringstream ss;
     ss << "Warning: Current decimal point of the C locale is set to \""

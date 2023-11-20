@@ -285,7 +285,7 @@ class ToFileWriter {
 };
 
 void testAndPrintLocaleWarning(ErrorMessages& errors) {
-  auto* decimalPoint = std::localeconv()->decimal_point;
+  auto* decimalPoint = localeconv()->decimal_point;
   if (decimalPoint == nullptr || *decimalPoint != '.') {
     std::stringstream ss;
     ss << "Warning: Current decimal point of the C locale is set to \""
@@ -296,7 +296,8 @@ void testAndPrintLocaleWarning(ErrorMessages& errors) {
 }
 }  // namespace
 
-void OsmWriter::write(const std::string& filename, const LaneletMap& laneletMap, ErrorMessages& errors, const io::Configuration& params) const {
+void OsmWriter::write(const std::string& filename, const LaneletMap& laneletMap, ErrorMessages& errors,
+                      const io::Configuration& params) const {
   testAndPrintLocaleWarning(errors);
   auto file = toOsmFile(laneletMap, errors, params);
   auto doc = osm::write(*file, params);
@@ -306,7 +307,8 @@ void OsmWriter::write(const std::string& filename, const LaneletMap& laneletMap,
   }
 }
 
-std::unique_ptr<osm::File> OsmWriter::toOsmFile(const LaneletMap& laneletMap, ErrorMessages& errors, const io::Configuration& params) const {
+std::unique_ptr<osm::File> OsmWriter::toOsmFile(const LaneletMap& laneletMap, ErrorMessages& errors,
+                                                const io::Configuration& params) const {
   return ToFileWriter::writeMap(laneletMap, projector(), errors, params);
 }
 }  // namespace io_handlers
