@@ -20,7 +20,7 @@ class Lanelet2Conan(ConanFile):
         'lanelet2_core',
         'lanelet2_io',
         # 'lanelet2_matching',
-        # 'lanelet2_projection',
+        'lanelet2_projection',
         # 'lanelet2_traffic_rules',
         # 'lanelet2_routing',
         # 'lanelet2_validation'
@@ -66,12 +66,4 @@ class Lanelet2Conan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = list(reversed([
-            'lanelet2_core',
-            # 'lanelet2_io',
-            # 'lanelet2_matching',
-            # 'lanelet2_projection',
-            # 'lanelet2_traffic_rules',
-            # 'lanelet2_routing',
-            # 'lanelet2_validation'
-        ]))
+        self.cpp_info.libs = list(reversed(self.proj_list))

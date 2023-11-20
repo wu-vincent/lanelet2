@@ -77,11 +77,17 @@ install(TARGETS ${PROJECT_NAME}
 #    mrt_add_tests(test)
 #    mrt_add_nosetests(test)
 #endif()
-if (LANELET2_ENABLE_TESTS)
+
+if (LANELET2_ENABLE_TESTING)
     include(GoogleTest)
     find_package(GTest REQUIRED)
-    file(GLOB PROJECT_SOURCE_FILES_test "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
-    add_executable("${PROJECT_NAME}-test" ${PROJECT_SOURCE_FILES_test})
-    target_link_libraries("${PROJECT_NAME}-test" PRIVATE GTest::gtest_main ${PROJECT_NAME})
-    gtest_discover_tests("${PROJECT_NAME}-test")
+    file(GLOB PROJECT_SOURCE_FILES_TEST "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
+    add_executable("${PROJECT_NAME}_test" ${PROJECT_SOURCE_FILES_TEST})
+    target_link_libraries("${PROJECT_NAME}_test" PRIVATE GTest::gtest_main ${PROJECT_NAME})
+
+    add_custom_command(TARGET "${PROJECT_NAME}_test" POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:lanelet2_core>" "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>")
+
+    gtest_discover_tests("${PROJECT_NAME}_test")
+    add_dependencies("${PROJECT_NAME}_test" lanelet2_maps)
 endif ()
