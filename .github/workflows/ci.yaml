@@ -63,7 +63,7 @@ jobs:
           tidy-checks: '' # force the use of .clang-tidy
           database: 'build'
 
-#      - name: Fail?
+  #      - name: Fail?
   #        if: steps.linter.outputs.checks-failed > 0
   #        run: echo "Some files failed the linting checks!" && exit 1
 
@@ -92,6 +92,8 @@ jobs:
         run: |
           conan profile detect --force
           conan install . --output-folder=build --build=missing
+
+      - uses: ilammy/msvc-dev-cmd@v1 # NOTE: this is needed to use cl.exe with the Ninja generator on Windows
 
       - name: Build with CMake
         run: |
