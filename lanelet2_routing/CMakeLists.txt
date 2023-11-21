@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.21)
 project(lanelet2_routing)
 
 ###################
@@ -48,9 +48,11 @@ if (LANELET2_ENABLE_TESTING)
     add_executable("${PROJECT_NAME}_test" ${PROJECT_SOURCE_FILES_TEST})
     target_link_libraries("${PROJECT_NAME}_test" PRIVATE GTest::gtest_main ${PROJECT_NAME})
 
-    add_custom_command(TARGET "${PROJECT_NAME}_test" POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:lanelet2_core>" "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:lanelet2_traffic_rules>" "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>")
+    if (WIN32)
+        add_custom_command(TARGET "${PROJECT_NAME}_test" POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}_test>" "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>"
+                COMMAND_EXPAND_LISTS)
+    endif ()
 
     gtest_discover_tests("${PROJECT_NAME}_test")
     add_dependencies("${PROJECT_NAME}_test" lanelet2_maps)

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.21)
 project(lanelet2_core)
 
 ###################
@@ -24,7 +24,7 @@ file(GLOB PROJECT_SOURCE_FILES_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 # Declare a cpp library
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES_SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(${PROJECT_NAME} PUBLIC Boost::graph Eigen3::Eigen)
+target_link_libraries(${PROJECT_NAME} PUBLIC Boost::headers Eigen3::Eigen)
 
 #############
 ## Install ##

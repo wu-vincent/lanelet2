@@ -3,18 +3,18 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 
 class Lanelet2Conan(ConanFile):
-    name = "lanelet2"
+    name = "lanelet2x"
     version = "1.2.1"
 
     # Optional metadata
     license = "BSD"
-    url = "https://github.com/fzi-forschungszentrum-informatik/lanelet2"
-    description = "Map handling framework for automated driving"
+    url = "https://github.com/wu-vincent/lanelet2"
+    description = "Your favorite map handling framework for automated driving, now standalone and with cross-platform support."
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True}
+    options = {"shared": [True, False], "fPIC": [True]}
+    default_options = {"shared": False, "fPIC": True}  # "boost/*:shared": True
 
     proj_list = [
         'lanelet2_core',
