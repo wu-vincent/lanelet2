@@ -53,7 +53,7 @@ class Lanelet2Conan(ConanFile):
     def generate(self):
         deps = CMakeDeps(self)
         deps.generate()
-        tc = CMakeToolchain(self)
+        tc = CMakeToolchain(self, generator="Ninja")
         tc.generate()
 
     def build(self):
