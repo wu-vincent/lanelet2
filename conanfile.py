@@ -9,21 +9,28 @@ class Lanelet2Conan(ConanFile):
     # Optional metadata
     license = "BSD"
     url = "https://github.com/wu-vincent/lanelet2"
-    description = "Your favorite map handling framework for automated driving, now standalone and with cross-platform support."
+    description = (
+        "Your favorite map handling framework for automated driving, now standalone and with cross-platform support."
+    )
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True]}
-    default_options = {"shared": False, "fPIC": True}  # "boost/*:shared": True
+    default_options = {
+        "shared": False,
+        "fPIC": True,
+        # "boost/*:shared": True,
+        "boost/*:without_python": False,
+    }
 
     proj_list = [
-        'lanelet2_core',
-        'lanelet2_io',
-        'lanelet2_matching',
-        'lanelet2_projection',
-        'lanelet2_traffic_rules',
-        'lanelet2_routing',
-        'lanelet2_validation'
+        "lanelet2_core",
+        "lanelet2_io",
+        "lanelet2_matching",
+        "lanelet2_projection",
+        "lanelet2_traffic_rules",
+        "lanelet2_routing",
+        "lanelet2_validation",
     ]
 
     exports_sources = ["CMakeLists.txt"] + [f"{proj}/*" for proj in proj_list]

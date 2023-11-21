@@ -5,16 +5,19 @@ project(lanelet2_python)
 ## Find packages ##
 ###################
 find_package(Boost REQUIRED COMPONENTS python)
-find_package(PythonLibs REQUIRED)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 ########################
 ## Build python modules ##
 ########################
-file(GLOB PROJECT_PYTHON_SOURCE_FILES_SRC "${CMAKE_SOURCE_DIR}/python_api/*.cpp")
+file(GLOB PROJECT_PYTHON_SOURCE_FILES_SRC "${CMAKE_CURRENT_SOURCE_DIR}/python_api/*.cpp")
 foreach (PROJECT_PYTHON_SOURCE_FILE ${PROJECT_PYTHON_SOURCE_FILES_SRC})
     get_filename_component(PYTHON_MODULE_NAME ${PROJECT_PYTHON_SOURCE_FILE} NAME_WE)
     add_library(${PYTHON_MODULE_NAME} SHARED ${PROJECT_PYTHON_SOURCE_FILE})
     target_include_directories(${PYTHON_MODULE_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    target_include_directories(${PYTHON_MODULE_NAME} PRIVATE ${Python3_INCLUDE_DIRS})
+    target_link_libraries(${PYTHON_MODULE_NAME} PUBLIC lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules lanelet2_routing lanelet2_matching)
+    target_link_libraries(${PYTHON_MODULE_NAME} PUBLIC Boost::python Python3::Python)
     set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES PREFIX "")
 endforeach ()
 
@@ -22,9 +25,10 @@ endforeach ()
 ## Install ##
 #############
 # Install all targets, headers by default and scripts and other files if specified (folders or files).
-
+# TODO:
 
 #############
 ## Testing ##
 #############
 # Add test targets for cpp and python tests
+# TODO:
