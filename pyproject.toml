@@ -1,0 +1,36 @@
+[build-system]
+requires = ["scikit-build-core"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "lanelet2x"
+version = "1.2.1"
+authors = [
+    { name = "Fabian Poggenhans", email = "fabian.poggenhans@kit.edu" },
+    { name = "Fabian Immel", email = "fabian.immel@kit.edu" },
+]
+maintainers = [
+    { name = "Vincent Wu", email = "zhengyu.wu21@imperial.ac.uk" }
+]
+description = "Endstone offers a plugin API for Bedrock Dedicated Servers, supporting both Python and C++ languages. This allowing developers to enhance Bedrock Dedicated Servers with various features and functionalities."
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["python", "lanelet2"]
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+]
+
+[tool.scikit-build]
+build-dir = "build/{wheel_tag}"
+cmake.args = ["--preset conan-release"]
+cmake.build-type = "Release"
+cmake.verbose = true
+logging.level = "DEBUG"
+wheel.packages = ["python/lanelet2"]
+wheel.license-files = ["LICENSE", "CODEOWNERS"]
+
+[tool.scikit-build.cmake.define]
+LANELET2_BUILD_TESTING = "ON"
