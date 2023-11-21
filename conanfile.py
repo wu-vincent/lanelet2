@@ -22,8 +22,8 @@ class Lanelet2Conan(ConanFile):
         # 'lanelet2_matching',
         'lanelet2_projection',
         'lanelet2_traffic_rules',
-        # 'lanelet2_routing',
-        # 'lanelet2_validation'
+        'lanelet2_routing',
+        'lanelet2_validation'
     ]
 
     exports_sources = ["CMakeLists.txt"] + [f"{proj}/*" for proj in proj_list]

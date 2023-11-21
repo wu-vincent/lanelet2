@@ -9,7 +9,7 @@
 #include "lanelet2_validation/Validation.h"
 
 TEST(TestAllValidators, onExampleMap) {  // NOLINT
-  const char* args[] = {"validator",      "../../lanelet2_maps/res/mapping_example.osm",
+  const char* args[] = {"validator",      "../lanelet2_maps/res/mapping_example.osm",
                         "--participants", "vehicle",
                         "--participants", "pedestrian",
                         "--lat",          "49",
@@ -32,7 +32,7 @@ TEST(Validator, pointsTooClose) {  // NOLINT
 }
 
 TEST(Validator, curvatureTooBig) {  // NOLINT
-  std::string exampleMapPath = "../../lanelet2_maps/res/mapping_example.osm";
+  std::string exampleMapPath = "../lanelet2_maps/res/mapping_example.osm";
   using namespace lanelet;
   projection::UtmProjector projector(Origin({49, 8.4}));
   LaneletMapPtr map = load(exampleMapPath, projector);
