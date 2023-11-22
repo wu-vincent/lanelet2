@@ -27,10 +27,12 @@ classifiers = [
 build-dir = "build/{wheel_tag}"
 cmake.args = ["--preset conan-release"]
 cmake.build-type = "Release"
-cmake.verbose = true
-logging.level = "DEBUG"
 wheel.packages = ["python/lanelet2"]
 wheel.license-files = ["LICENSE", "CODEOWNERS"]
 
 [tool.scikit-build.cmake.define]
-LANELET2_BUILD_TESTING = "ON"
+LANELET2_BUILD_TESTING = "OFF"
+
+[[tool.scikit-build.overrides]]
+if.platform-system = "win32"
+cmake.args = ["--preset conan-default"]

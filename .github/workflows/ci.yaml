@@ -95,7 +95,14 @@ jobs:
 
       - uses: ilammy/msvc-dev-cmd@v1 # NOTE: this is needed to use cl.exe with the Ninja generator on Windows
 
-      - name: Build with CMake
+      - name: Build with CMake on Windows
+        if: runner.os == 'Windows'
+        run: |
+          cmake -S . -B build --preset conan-default
+          cmake --build build --config Release
+
+      - name: Build with CMake on Linux and macOS
+        if: runner.os == 'Linux' || runner.os == 'macOS'
         run: |
           cmake -S . -B build --preset conan-release -DCMAKE_BUILD_TYPE=Release
           cmake --build build
