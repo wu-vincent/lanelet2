@@ -1,10 +1,8 @@
 import unittest
-import lanelet2  # if we fail here, there is something wrong with lanelet2 registration
-from lanelet2.core import (BasicPoint3d, GPSPoint)
+
+from lanelet2.core import BasicPoint3d, GPSPoint
 from lanelet2.io import Origin
-from lanelet2.projection import (UtmProjector,
-                                 GeocentricProjector,
-                                 LocalCartesianProjector)
+from lanelet2.projection import UtmProjector, GeocentricProjector, LocalCartesianProjector
 
 
 class MatchingApiTestCase(unittest.TestCase):
@@ -22,7 +20,7 @@ class MatchingApiTestCase(unittest.TestCase):
     # the larges number of decimal places for assertEqual comparisons
     decimals = 8
 
-    def test_UtmProjector(self):
+    def test_utm_projector(self):
         # NOTE: the projected plane is on the WGS84 ellipsoid
         origin = Origin(self.origin_lat, self.origin_lon)
         utm_projector = UtmProjector(origin)
@@ -38,14 +36,13 @@ class MatchingApiTestCase(unittest.TestCase):
         self.assertEqual(round(gps_point.lon, 5), self.origin_lon)
         self.assertEqual(round(gps_point.alt, 5), self.origin_ele)
 
-    def test_LocalCartesianProjector(self):
+    def test_local_cartesian_projector(self):
         # NOTE: the projected plane is tangential to the WGS84 ellipsoid
         # but it is at the given elevation above the ellipsoid
         origin = Origin(self.origin_lat, self.origin_lon, self.origin_ele)
         local_cartesian_projector = LocalCartesianProjector(origin)
 
-        local_cartesian_point = local_cartesian_projector.forward(
-            self.origin_gps_point)
+        local_cartesian_point = local_cartesian_projector.forward(self.origin_gps_point)
         self.assertEqual(local_cartesian_point.x, 0.0)
         self.assertEqual(local_cartesian_point.y, 0.0)
         self.assertEqual(local_cartesian_point.z, 0.0)
@@ -56,7 +53,7 @@ class MatchingApiTestCase(unittest.TestCase):
         self.assertEqual(round(gps_point.lon, self.decimals), self.origin_lon)
         self.assertEqual(round(gps_point.alt, self.decimals), self.origin_ele)
 
-    def test_GeocentricProjector(self):
+    def test_geocentric_projector(self):
         geocentric_projector = GeocentricProjector()
 
         ecef_point = geocentric_projector.forward(self.origin_gps_point)
@@ -70,5 +67,5 @@ class MatchingApiTestCase(unittest.TestCase):
         self.assertEqual(round(gps_point.alt, self.decimals), self.origin_ele)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

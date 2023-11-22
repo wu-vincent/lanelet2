@@ -15,5 +15,7 @@ add_custom_command(
 #############
 # Install all targets, headers by default and scripts and other files if specified (folders or files).
 # This command also exports libraries and config files for dependent packages and this supersedes catkin_package.
-install(DIRECTORY res/ DESTINATION "res/")
-install(DIRECTORY josm/ DESTINATION "res/" PATTERN ".gitignore" EXCLUDE)
+if (NOT DEFINED SKBUILD)
+    install(DIRECTORY res/ DESTINATION "res/")
+    install(DIRECTORY josm/ DESTINATION "res/" PATTERN ".gitignore" EXCLUDE)
+endif ()

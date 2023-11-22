@@ -50,12 +50,14 @@ endif ()
 ## Install ##
 #############
 # Install all targets, headers by default and scripts and other files if specified (folders or files).
-include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+if (NOT DEFINED SKBUILD)
+    include(GNUInstallDirs)
+    install(TARGETS ${PROJECT_NAME}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+endif ()
 
 #############
 ## Testing ##

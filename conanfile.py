@@ -1,10 +1,12 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
+from lanelet2_python.src.lanelet2 import __version__
+
 
 class Lanelet2Conan(ConanFile):
     name = "lanelet2x"
-    version = "1.2.1"
+    version = __version__
 
     # Optional metadata
     license = "BSD"
@@ -19,7 +21,7 @@ class Lanelet2Conan(ConanFile):
     default_options = {
         "shared": False,
         "fPIC": True,
-        # "boost/*:shared": True,
+        "boost/*:shared": True,
         "boost/*:without_python": False,
     }
 

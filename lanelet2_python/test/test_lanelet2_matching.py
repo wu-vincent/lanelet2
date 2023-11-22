@@ -1,9 +1,24 @@
 import unittest
+
 import lanelet2  # if we fail here, there is something wrong with lanelet2 registration
-from lanelet2.core import AttributeMap, getId, BasicPoint2d, Point3d, LineString3d, Lanelet, RegulatoryElement, TrafficLight, LaneletMap, createMapFromLanelets, ConstLanelet, ConstLineString3d
-from lanelet2.geometry import distance, intersects2d, boundingBox2d, to2D, equals
-from lanelet2.matching import Pose2d, getDeterministicMatches, getProbabilisticMatches, Object2d, ObjectWithCovariance2d, PositionCovariance2d, removeNonRuleCompliantMatches
+from lanelet2.core import (
+    getId,
+    Point3d,
+    LineString3d,
+    Lanelet,
+    LaneletMap,
+    ConstLanelet,
+)
 from lanelet2.matching import ConstLaneletMatch, ConstLaneletMatchProbabilistic
+from lanelet2.matching import (
+    Pose2d,
+    getDeterministicMatches,
+    getProbabilisticMatches,
+    Object2d,
+    ObjectWithCovariance2d,
+    PositionCovariance2d,
+    removeNonRuleCompliantMatches,
+)
 
 
 def get_sample_lanelet_map():
@@ -44,11 +59,11 @@ class ObjectsApiTestCase(unittest.TestCase):
         self.assertEqual(len(obj_with_cov_2d.absoluteHull), 0)
         self.assertEqual(obj_with_cov_2d.vonMisesKappa, 2)
 
-        pos_cov_2d = PositionCovariance2d(1., 2., 3.)
+        pos_cov_2d = PositionCovariance2d(1.0, 2.0, 3.0)
         self.assertTrue(isinstance(pos_cov_2d, PositionCovariance2d))
         self.assertEqual("1 3\n3 2", str(pos_cov_2d))
 
-        pose_2d = Pose2d(1., 2., 3.)
+        pose_2d = Pose2d(1.0, 2.0, 3.0)
         self.assertTrue(isinstance(pose_2d, Pose2d))
         self.assertEqual("x: 1\ny:  2\nphi: 3", str(pose_2d))
 
@@ -58,18 +73,19 @@ class MatchingApiTestCase(unittest.TestCase):
         mymap = get_sample_lanelet_map()
 
         obj = Object2d(1, Pose2d(1, 1, 0), [])
-        obj_with_cov = ObjectWithCovariance2d(1, Pose2d(1, 1, 0), [], PositionCovariance2d(1., 1., 0.), 2)
+        obj_with_cov = ObjectWithCovariance2d(1, Pose2d(1, 1, 0), [], PositionCovariance2d(1.0, 1.0, 0.0), 2)
 
-        obj_matches = getDeterministicMatches(mymap, obj, 1.)
+        obj_matches = getDeterministicMatches(mymap, obj, 1.0)
         self.assertEqual(len(obj_matches), 2)  # lanelet in both directions
         self.assertTrue(isinstance(obj_matches[0], ConstLaneletMatch))
 
-        obj_with_cov_matches = getProbabilisticMatches(mymap, obj_with_cov, 1.)
+        obj_with_cov_matches = getProbabilisticMatches(mymap, obj_with_cov, 1.0)
         self.assertEqual(len(obj_with_cov_matches), 2)  # lanelet in both directions
         self.assertTrue(isinstance(obj_with_cov_matches[0], ConstLaneletMatchProbabilistic))
 
-        traffic_rules = lanelet2.traffic_rules.create(lanelet2.traffic_rules.Locations.Germany,
-                                                      lanelet2.traffic_rules.Participants.Vehicle)
+        traffic_rules = lanelet2.traffic_rules.create(
+            lanelet2.traffic_rules.Locations.Germany, lanelet2.traffic_rules.Participants.Vehicle
+        )
 
         obj_matches_rule_compliant = removeNonRuleCompliantMatches(obj_matches, traffic_rules)
         self.assertEqual(len(obj_matches_rule_compliant), 1)  # lanelet only in one direction
@@ -90,5 +106,5 @@ class MatchingApiTestCase(unittest.TestCase):
         self.assertRaises(RuntimeError, removeNonRuleCompliantMatches, [obj], traffic_rules)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

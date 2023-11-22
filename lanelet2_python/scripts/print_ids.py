@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import lanelet2
-import sys
 import argparse
+import sys
+
+import lanelet2
 
 
 def print_layer(layer, layerName):
@@ -18,8 +19,14 @@ args = parser.parse_args()
 proj = lanelet2.projection.MercatorProjector(lanelet2.io.Origin(49, 8))
 map = lanelet2.io.load(args.filename, proj)
 
-layers = {"Points": map.pointLayer, "Line Strings": map.lineStringLayer, "Polygons": map.polygonLayer,
-          "Lanelets": map.laneletLayer, "Areas": map.areaLayer, "Regulatory Elements": map.regulatoryElementLayer}
+layers = {
+    "Points": map.pointLayer,
+    "Line Strings": map.lineStringLayer,
+    "Polygons": map.polygonLayer,
+    "Lanelets": map.laneletLayer,
+    "Areas": map.areaLayer,
+    "Regulatory Elements": map.regulatoryElementLayer,
+}
 
 for layer_name, layer in layers.iteritems():
     if not args.has_id:
