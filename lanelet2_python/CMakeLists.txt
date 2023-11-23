@@ -21,13 +21,6 @@ foreach (PROJECT_PYTHON_SOURCE_FILE ${PROJECT_PYTHON_SOURCE_FILES_SRC})
     target_include_directories(${PYTHON_MODULE_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
     target_include_directories(${PYTHON_MODULE_NAME} PRIVATE ${Python3_INCLUDE_DIRS})
     target_link_libraries(${PYTHON_MODULE_NAME} PUBLIC Boost::python lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules lanelet2_routing lanelet2_matching)
-
-    if (DEFINED SKBUILD AND NOT WIN32)
-        set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES
-                BUILD_WITH_INSTALL_RPATH TRUE
-                INSTALL_RPATH_USE_LINK_PATH TRUE
-                INSTALL_RPATH "${CMAKE_SOURCE_DIR}/build/lib")
-    endif ()
 endforeach ()
 
 #############
