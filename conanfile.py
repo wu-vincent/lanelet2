@@ -1,6 +1,6 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
-
+from conan.tools.files import copy
 from lanelet2_python.src.lanelet2 import __version__
 
 
@@ -92,6 +92,11 @@ class Lanelet2Conan(ConanFile):
         deps.generate()
         tc = CMakeToolchain(self)
         tc.generate()
+
+        for dep in self.dependencies.values():
+            copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(self.source_path / "build" / "lib"))
+            copy(self, "*.so*", dep.cpp_info.libdirs[0], str(self.source_path / "build" / "lib"))
+            copy(self, "*.dll", dep.cpp_info.bindirs[0], str(self.source_path / "build" / "lib"))
 
     def build(self):
         cmake = CMake(self)
