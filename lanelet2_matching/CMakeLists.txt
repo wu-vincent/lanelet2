@@ -24,7 +24,6 @@ add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES_SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules)
 
-
 #############
 ## Install ##
 #############

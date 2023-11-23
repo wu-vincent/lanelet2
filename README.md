@@ -1,7 +1,15 @@
 # Lanelet2
 
-[![CI](https://github.com/fzi-forschungszentrum-informatik/lanelet2/actions/workflows/ci.yaml/badge.svg)](
-https://github.com/wu-vincent/lanelet2/actions/workflows/ci.yaml)
+[![CI](https://github.com/wu-vincent/lanelet2x/actions/workflows/ci.yaml/badge.svg)](
+https://github.com/wu-vincent/lanelet2x/actions/workflows/ci.yaml)
+[![CD](https://github.com/wu-vincent/lanelet2x/actions/workflows/cd.yaml/badge.svg)](
+https://github.com/wu-vincent/lanelet2x/actions/workflows/cd.yaml)
+[![PyPI - Version](https://img.shields.io/pypi/v/lanelet2x)](
+https://pypi.org/project/lanelet2x)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/lanelet2x)](
+https://pypi.org/project/lanelet2x)
+![PyPI - Python Version](
+https://img.shields.io/pypi/pyversions/lanelet2x?logo=python&logoColor=white)
 
 ## Overview
 

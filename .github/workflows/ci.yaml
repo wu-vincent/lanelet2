@@ -93,8 +93,6 @@ jobs:
           conan profile detect --force
           conan install . --output-folder=build --build=missing
 
-      - uses: ilammy/msvc-dev-cmd@v1 # NOTE: this is needed to use cl.exe with the Ninja generator on Windows
-
       - name: Build with CMake on Windows
         if: runner.os == 'Windows'
         run: |

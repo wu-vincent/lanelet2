@@ -8,7 +8,7 @@ if os.name == "nt":
     bin_dir = None
 
     try:
-        bin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "bin"))
+        bin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "bin"))
         try:
             os.add_dll_directory(bin_dir)
         except (Exception,):

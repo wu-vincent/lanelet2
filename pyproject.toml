@@ -30,13 +30,18 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
 ]
 
+[project.optional-dependencies]
+pytest = ["pytest"]
+
 [tool.scikit-build]
 build-dir = "build/{wheel_tag}"
-cmake.args = ["--preset conan-release"]
+cmake.args = ["-G Ninja", "--preset conan-release"]
 cmake.define = { LANELET2_ENABLE_TESTING = "OFF" }
 cmake.build-type = "Release"
 wheel.packages = ["lanelet2_python/src/lanelet2"]
 wheel.license-files = ["LICENSE", "CODEOWNERS"]
+logging.level = "DEBUG"
+cmake.verbose = true
 
 [tool.scikit-build.metadata.version]
 provider = "scikit_build_core.metadata.regex"
@@ -44,4 +49,41 @@ input = "lanelet2_python/src/lanelet2/__init__.py"
 
 [[tool.scikit-build.overrides]]
 if.platform-system = "win32"
-cmake.args = ["--preset conan-default"]
+cmake.args = ["--preset conan-default"] # override for multi-configuration generator (i.e. MSVC) on Windows
+
+[tool.cibuildwheel]
+skip = ["*-win32", "*-musllinux_x86_64", "*_i686"]
+test-requires = "pytest"
+test-command = "pytest {project}/lanelet2_python/test"
+
+[tool.cibuildwheel.windows]
+before-build = [
+    "python -m pip install --upgrade pip",
+    "pip install -r requirements.txt",
+    "conan profile detect --force",
+    "conan install . --output-folder=build --build=*"
+]
+
+[tool.cibuildwheel.linux]
+before-build = [
+    # here, we restore libpython*.a - otherwise conan will fail when adding boost::python
+    # see https://github.com/pypa/manylinux/blob/main/docker/build_scripts/finalize-python.sh
+    "pushd /opt/_internal",
+    "tar -xJf static-libs-for-embedding-only.tar.xz",
+    "popd",
+    "python -m pip install --upgrade pip",
+    "pip install -r requirements.txt",
+    "conan profile detect --force",
+    # we force the build of everything from source - prebuilt b2 does not work in manylinux
+    # also set the generator to use ninja because scikit-build-core will default to ninja
+    "conan install . --output-folder=build --build=* -c tools.cmake.cmaketoolchain:generator=Ninja"
+]
+
+[tool.cibuildwheel.macos]
+before-build = [
+    "python -m pip install --upgrade pip",
+    "pip install -r requirements.txt",
+    "conan profile detect --force",
+    # set the generator to use ninja because scikit-build-core will default to ninja
+    "conan install . --output-folder=build --build=* -c tools.cmake.cmaketoolchain:generator=Ninja"
+]

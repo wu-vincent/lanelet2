@@ -24,6 +24,34 @@ class Lanelet2Conan(ConanFile):
         "boost/*:shared": True,
         "boost/*:without_python": False,
     }
+    without_boost_components = [
+        "chrono",
+        "container",
+        "context",
+        "contract",
+        "coroutine",
+        "date_time",
+        "exception",
+        "fiber",
+        "graph",
+        "iostreams",
+        "json",
+        "locale",
+        "log",
+        "math",
+        "mpi",
+        "nowide",
+        "random",
+        "regex",
+        "stacktrace",
+        "test",
+        "thread",
+        "timer",
+        "type_erasure",
+        "url",
+        "wave",
+    ]
+    default_options.update((f"boost/*:without_{component}", True) for component in without_boost_components)
 
     proj_list = [
         "lanelet2_core",

@@ -7,19 +7,27 @@ project(lanelet2_python)
 find_package(Boost REQUIRED COMPONENTS python)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module REQUIRED)
 
-########################
+##########################
 ## Build python modules ##
-########################
+##########################
 set(PROJECT_PYTHON_TARGETS)
 file(GLOB PROJECT_PYTHON_SOURCE_FILES_SRC "${CMAKE_CURRENT_SOURCE_DIR}/python_api/*.cpp")
 foreach (PROJECT_PYTHON_SOURCE_FILE ${PROJECT_PYTHON_SOURCE_FILES_SRC})
     get_filename_component(PYTHON_MODULE_NAME ${PROJECT_PYTHON_SOURCE_FILE} NAME_WE)
     python_add_library(${PYTHON_MODULE_NAME} MODULE ${PROJECT_PYTHON_SOURCE_FILE} WITH_SOABI)
+    list(APPEND PROJECT_PYTHON_TARGETS ${PYTHON_MODULE_NAME})
+
     target_compile_definitions(${PYTHON_MODULE_NAME} PRIVATE -DPYTHON_API_MODULE_NAME=${PYTHON_MODULE_NAME})
     target_include_directories(${PYTHON_MODULE_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
     target_include_directories(${PYTHON_MODULE_NAME} PRIVATE ${Python3_INCLUDE_DIRS})
     target_link_libraries(${PYTHON_MODULE_NAME} PUBLIC Boost::python lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules lanelet2_routing lanelet2_matching)
-    list(APPEND PROJECT_PYTHON_TARGETS ${PYTHON_MODULE_NAME})
+
+    if (DEFINED SKBUILD AND NOT WIN32)
+        set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES
+                BUILD_WITH_INSTALL_RPATH TRUE
+                INSTALL_RPATH_USE_LINK_PATH TRUE
+                INSTALL_RPATH "${CMAKE_SOURCE_DIR}/build/lib")
+    endif ()
 endforeach ()
 
 #############
@@ -29,15 +37,12 @@ endforeach ()
 if (DEFINED SKBUILD)
     install(TARGETS ${PROJECT_PYTHON_TARGETS} DESTINATION "lanelet2")
     if (WIN32)
-        # Bundle runtime dlls with the wheel on windows
+        # Bundle shared library dependencies on Windows
         foreach (PROJECT_PYTHON_TARGET ${PROJECT_PYTHON_TARGETS})
-            install(FILES "$<TARGET_RUNTIME_DLLS:${PROJECT_PYTHON_TARGET}>" DESTINATION "lanelet2/bin")
+            install(FILES "$<TARGET_RUNTIME_DLLS:${PROJECT_PYTHON_TARGET}>" DESTINATION "bin")
         endforeach ()
+    else ()
+        # Save shared library dependencies to RPATH on Unix
+        install(TARGETS lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules lanelet2_routing lanelet2_matching DESTINATION "${CMAKE_SOURCE_DIR}/build/lib")
     endif ()
 endif ()
-
-#############
-## Testing ##
-#############
-# Add test targets for cpp and python tests
-# TODO:

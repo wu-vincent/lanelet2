@@ -8,109 +8,62 @@ on:
       - '*'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  build:
+  build_wheels:
+    name: Build wheel for ${{ matrix.python }}-${{ matrix.machine.platform }} on ${{ matrix.machine.os }}
     strategy:
+      fail-fast: false
       matrix:
-        # this should be kept in sync with ci.yaml
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-        include:
-          - python-version: "3.8"
-            boost-version: "1.75.0"
-            platform-version: manylinux_2_27_x86_64
-            image-version: conanio/gcc7:latest
-          - python-version: "3.9"
-            boost-version: "1.75.0"
-            platform-version: manylinux_2_27_x86_64
-            image-version: conanio/gcc7:latest
-          - python-version: "3.10"
-            boost-version: "1.81.0"
-            platform-version: manylinux_2_31_x86_64
-            image-version: conanio/gcc10:latest
-          - python-version: "3.11"
-            boost-version: "1.81.0"
-            platform-version: manylinux_2_31_x86_64
-            image-version: conanio/gcc10:latest
-    runs-on: ubuntu-latest
+        machine:
+          - { os: 'windows-latest', platform: 'win_amd64' }
+          - { os: 'ubuntu-latest', platform: 'manylinux_x86_64' }
+          - { os: 'macos-latest', platform: 'macosx_x86_64' }
+        python: [ "cp39", "cp310", "cp311", "cp312" ]
+    runs-on: ${{ matrix.machine.os }}
     steps:
-      - name: Setup docker buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Create build container
-        uses: docker/build-push-action@v3
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          file: .github/conan_dockerfile/Dockerfile
-          tags: lanelet2_conan_with_pip_wheel
-          load: true
-          target: lanelet2_conan_with_pip_wheel
-          build-args: |
-            FROM=${{ matrix.image-version }}
-            PY_VERSION=${{ matrix.python-version }}
-            PLATFORM=${{ matrix.platform-version }}
-            CONAN_ARGS=--require-override=boost/${{ matrix.boost-version }}
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.16.2
+        env:
+          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.machine.platform }}
 
-      - name: Create output directory
-        run: mkdir -p ${{ github.workspace }}/output
-
-      - name: Package lanelet2 in build container
-        uses: addnab/docker-run-action@v3
-        with:
-          image: lanelet2_conan_with_pip_wheel
-          shell: bash
-          options: -v ${{ github.workspace }}/dist:/dist
-          run: |
-            set -e
-            # set env variables
-            export HOME=/home/conan
-            
-            # copy wheel to dist directory
-            sudo cp -r $HOME/dist/* /dist
-
-      - name: Store wheel
+      - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dist
-          path: dist/
+          path: ./wheelhouse/*.whl
 
-  test:
-    needs: build
-    strategy:
-      matrix:
-        # test only on currently supported version
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-        os: ["ubuntu-22.04", "ubuntu-20.04"]
-    runs-on: ${{ matrix.os }}
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
     steps:
-      - name: Restore wheel
-        uses: actions/download-artifact@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build sdist
+        run: pipx run build --sdist
+
+      - uses: actions/upload-artifact@v3
         with:
-          name: dist
-          path: dist/
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install wheel
-        # use dist/ directory as package source instead of pypi.org
-        run: pip install lanelet2 --no-index --find-links dist/
-      - name: Test wheel
-        run: python -c "import lanelet2; assert lanelet2.core.Point2d(0, 0, 0) is not None"
+          path: dist/*.tar.gz
 
   publish:
+    name: Publish
     if: contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
-    needs: [build, test]
+    needs: [ build_wheels, build_sdist ]
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: write
+
     steps:
-      - name: Restore wheel
+      - name: Restore artifacts
         uses: actions/download-artifact@v3
         with:
-          name: dist
-          path: dist/
+          name: artifact
+          path: dist
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -118,7 +71,4 @@ jobs:
           files: dist/*
 
       - name: Publish package to PyPI
-        if: github.repository == 'fzi-forschungszentrum-informatik/Lanelet2'
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
