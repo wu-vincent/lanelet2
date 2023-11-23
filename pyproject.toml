@@ -12,7 +12,7 @@ authors = [
 maintainers = [
     { name = "Vincent Wu", email = "zhengyu.wu21@imperial.ac.uk" }
 ]
-description = "Endstone offers a plugin API for Bedrock Dedicated Servers, supporting both Python and C++ languages. This allowing developers to enhance Bedrock Dedicated Servers with various features and functionalities."
+description = "Your favorite map handling framework for automated driving, now standalone and with cross-platform support."
 readme = "README.md"
 requires-python = ">=3.9"
 keywords = ["python", "lanelet2"]
