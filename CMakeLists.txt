@@ -12,7 +12,6 @@ endif ()
 
 if (SKBUILD)
     set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-#    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
     set(CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/build/lib")
 endif ()
 

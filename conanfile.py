@@ -1,6 +1,8 @@
 from conan import ConanFile
+from conan.tools.apple import is_apple_os
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
+
 from lanelet2_python.src.lanelet2 import __version__
 
 
@@ -97,6 +99,11 @@ class Lanelet2Conan(ConanFile):
             copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(self.source_path / "build" / "lib"))
             copy(self, "*.so*", dep.cpp_info.libdirs[0], str(self.source_path / "build" / "lib"))
             copy(self, "*.dll", dep.cpp_info.bindirs[0], str(self.source_path / "build" / "lib"))
+
+        if is_apple_os(self):
+            path_to_lib = str(self.source_path / "build" / "lib" / "libboost_filesystem.dylib")
+            command = f"install_name_tool -add_rpath @loader_path {path_to_lib}"
+            self.run(command)
 
     def build(self):
         cmake = CMake(self)
