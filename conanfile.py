@@ -5,7 +5,7 @@ from conan.tools.apple import is_apple_os
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
 
-from lanelet2_python.src.lanelet2 import __version__
+__version__ = "1.2.1"
 
 
 class Lanelet2Conan(ConanFile):
@@ -57,7 +57,7 @@ class Lanelet2Conan(ConanFile):
     ]
     default_options.update((f"boost/*:without_{component}", True) for component in without_boost_components)
 
-    proj_list = [
+    project_libs = [
         "lanelet2_core",
         "lanelet2_io",
         "lanelet2_matching",
@@ -67,7 +67,7 @@ class Lanelet2Conan(ConanFile):
         "lanelet2_validation",
     ]
 
-    exports_sources = ["CMakeLists.txt"] + [f"{proj}/*" for proj in proj_list]
+    exports_sources = ["CMakeLists.txt", "lanelet2_*/*"]
 
     def requirements(self):
         self.requires("boost/[>=1.75.0 <=1.81.0]")
@@ -120,4 +120,9 @@ class Lanelet2Conan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = list(reversed(self.proj_list))
+        self.cpp_info.libs = []
+        for lib_name in list(reversed(self.project_libs)):
+            self.cpp_info.components[lib_name].libs = [lib_name]
+            self.cpp_info.components[lib_name].set_property("cmake_target_name",
+                                                            lib_name.replace("lanelet2_", "lanelet2::"))
+            self.cpp_info.libs.append(lib_name if self.options.shared else f"{lib_name}-static")

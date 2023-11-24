@@ -20,9 +20,12 @@ file(GLOB PROJECT_SOURCE_FILES_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 ## Build ##
 ###########
 # Declare a cpp library
-add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES_SRC})
+add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES_SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core)
+if (NOT BUILD_SHARED_LIBS)
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-static")
+endif ()
 
 #############
 ## Install ##

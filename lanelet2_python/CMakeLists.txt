@@ -39,4 +39,7 @@ if (DEFINED SKBUILD)
             install(FILES "$<TARGET_RUNTIME_DLLS:${PROJECT_PYTHON_TARGET}>" DESTINATION "bin")
         endforeach ()
     endif ()
+else ()
+    install(DIRECTORY scripts/ DESTINATION "scripts/")
 endif ()
+

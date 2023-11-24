@@ -97,26 +97,10 @@ pip install -r requirements.txt
 conan profile detect
 ```
 
-Install the dependencies:
-
-```bash
-conan install . --build=missing
-```
-
 Now we are ready to build
 
-#### Windows
 ```bash
-cd build
-cmake .. --preset conan-default
-cmake --build . --config Release
-```
-
-#### Linux and MacOS
-```bash
-cd build
-cmake .. --preset conan-release -DCMAKE_BUILD_TYPE=Release
-cmake --build .
+conan create . --build=missing
 ```
 
 ## Examples

@@ -21,9 +21,12 @@ file(GLOB_RECURSE PROJECT_SOURCE_FILES_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cp
 ###########
 # Declare a cpp library
 find_package(Boost REQUIRED)
-add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES_SRC})
+add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES_SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core lanelet2_io lanelet2_traffic_rules lanelet2_projection lanelet2_routing Boost::program_options)
+if (NOT BUILD_SHARED_LIBS)
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-static")
+endif ()
 
 # Add executables in "tools"
 set(TOOL_TARGETS)

@@ -2,8 +2,6 @@ import os
 from os.path import dirname
 from pkgutil import iter_modules
 
-__version__ = "1.2.1"
-
 if os.name == "nt":
     bin_dir = None
 
