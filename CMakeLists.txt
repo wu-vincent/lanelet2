@@ -15,8 +15,7 @@ if (SKBUILD)
     set(CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/build/lib")
 endif ()
 
-option(LANELET2_ENABLE_TESTING "Build the tests." ON)
-if (LANELET2_ENABLE_TESTING)
+if (NOT BUILD_TESTING STREQUAL OFF)
     enable_testing()
 endif ()
 

@@ -43,7 +43,7 @@ endif ()
 ## Testing ##
 #############
 # Add test targets for cpp and python tests
-if (LANELET2_ENABLE_TESTING)
+if (NOT BUILD_TESTING STREQUAL OFF)
     include(GoogleTest)
     file(GLOB PROJECT_SOURCE_FILES_TEST "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
     add_executable("${PROJECT_NAME}_test" ${PROJECT_SOURCE_FILES_TEST})

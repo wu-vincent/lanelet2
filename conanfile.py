@@ -74,7 +74,7 @@ class Lanelet2Conan(ConanFile):
         self.requires("eigen/3.4.0")
         self.requires("geographiclib/1.52")
         self.requires("pugixml/1.13")
-        self.requires("gtest/1.14.0")
+        self.test_requires("gtest/1.14.0")
 
     def build_requirements(self):
         pass
@@ -113,6 +113,7 @@ class Lanelet2Conan(ConanFile):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
+        cmake.test()
 
     def package(self):
         cmake = CMake(self)
