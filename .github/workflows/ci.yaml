@@ -22,7 +22,6 @@ jobs:
           version: 17
           style: file
           tidy-checks: '-*' # only formatting
-          files-changed-only: false
 
       - name: Fail?
         if: steps.formatter.outputs.checks-failed > 0
@@ -62,7 +61,6 @@ jobs:
           version: 17
           style: file
           tidy-checks: '' # force the use of .clang-tidy
-          files-changed-only: false
           database: 'build'
 
   #      - name: Fail?
