@@ -3,10 +3,10 @@
 #include <lanelet2_core/primitives/BasicRegulatoryElements.h>
 #include <lanelet2_io/Exceptions.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <fstream>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace lanelet {
 inline bool operator==(const PointData& lhs, const PointData& rhs) {

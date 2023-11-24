@@ -29,13 +29,12 @@ endforeach ()
 # Install all python modules into /lanelet2 if CMake is running inside scikit-build-core
 if (DEFINED SKBUILD)
     install(TARGETS ${PROJECT_PYTHON_TARGETS} DESTINATION "lanelet2")
+    install(TARGETS lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules lanelet2_routing lanelet2_matching DESTINATION "${CMAKE_SOURCE_DIR}/build/repair")
+
     if (WIN32)
         # Bundle shared library dependencies on Windows
         foreach (PROJECT_PYTHON_TARGET ${PROJECT_PYTHON_TARGETS})
             install(FILES "$<TARGET_RUNTIME_DLLS:${PROJECT_PYTHON_TARGET}>" DESTINATION "bin")
         endforeach ()
-    else ()
-        # Save shared library dependencies to RPATH on Unix
-        install(TARGETS lanelet2_core lanelet2_io lanelet2_projection lanelet2_traffic_rules lanelet2_routing lanelet2_matching DESTINATION "${CMAKE_SOURCE_DIR}/build/lib")
     endif ()
 endif ()

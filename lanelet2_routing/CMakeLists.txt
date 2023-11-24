@@ -23,7 +23,7 @@ file(GLOB PROJECT_SOURCE_FILES_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 # Declare a cpp library
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES_SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core lanelet2_traffic_rules Boost::filesystem)
+target_link_libraries(${PROJECT_NAME} PUBLIC lanelet2_core lanelet2_traffic_rules)
 
 #############
 ## Install ##
