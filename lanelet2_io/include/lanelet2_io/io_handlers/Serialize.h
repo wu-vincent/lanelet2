@@ -41,13 +41,13 @@ namespace serialization {
 template <typename Archive>
 void load(Archive& ar, lanelet::Attribute& p, unsigned int /*version*/) {
   std::string val;
-  ar& val;
+  ar & val;
   p = std::move(val);
 }
 
 template <typename Archive>
 void save(Archive& ar, const lanelet::Attribute& p, unsigned int /*version*/) {
-  ar& p.value();
+  ar & p.value();
 }
 
 template <typename Archive>
@@ -144,12 +144,12 @@ void save(Archive& ar, const lanelet::WeakLanelet& l, unsigned int /*version*/) 
     throw lanelet::LaneletError("Can not serialize expired weak pointer!");
   }
   auto sp = l.lock();
-  ar& sp;
+  ar & sp;
 }
 template <typename Archive>
 void load(Archive& ar, lanelet::WeakLanelet& l, unsigned int /*version*/) {
   lanelet::Lanelet lanelet;
-  ar& lanelet;
+  ar & lanelet;
   l = lanelet;
 }
 
@@ -221,7 +221,7 @@ void load(Archive& ar, lanelet::ConstLineString3d& l, unsigned int /*version*/) 
 template <typename Archive>
 void serialize(Archive& ar, lanelet::LineString2d& ls, unsigned int /*version*/) {
   auto ls3d = lanelet::traits::to3D(ls);
-  ar& ls3d;
+  ar & ls3d;
   ls = lanelet::traits::to2D(ls3d);
 }
 
@@ -322,12 +322,12 @@ void save(Archive& ar, const lanelet::WeakArea& a, unsigned int /*version*/) {
     throw lanelet::LaneletError("Can not serialize expired weak pointer!");
   }
   auto sp = a.lock();
-  ar& sp;
+  ar & sp;
 }
 template <typename Archive>
 void load(Archive& ar, lanelet::WeakArea& a, unsigned int /*version*/) {
   lanelet::Area area;
-  ar& area;
+  ar & area;
   a = area;
 }
 

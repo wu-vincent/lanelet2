@@ -19,7 +19,6 @@ jobs:
         uses: cpp-linter/cpp-linter-action@v2
         id: formatter
         with:
-          version: 11
           style: file
           tidy-checks: '-*' # only formatting
 
@@ -58,7 +57,6 @@ jobs:
         uses: cpp-linter/cpp-linter-action@v2
         id: linter
         with:
-          version: 11
           style: file
           tidy-checks: '' # force the use of .clang-tidy
           database: 'build'

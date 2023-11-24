@@ -6,9 +6,7 @@ using LocalCartesianProjector = lanelet::projection::LocalCartesianProjector;
 
 class LocalCartesianProjectionTest : public ::testing::Test {
  public:
-  void SetUp() override {
-    localCartesianProjector = std::make_shared<LocalCartesianProjector>(origin);
-  }
+  void SetUp() override { localCartesianProjector = std::make_shared<LocalCartesianProjector>(origin); }
   LocalCartesianProjector::Ptr localCartesianProjector;
 
   // Lat, Lon, Ele with respect to the WGS84 ellipsoid

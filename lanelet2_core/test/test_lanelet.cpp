@@ -73,7 +73,7 @@ TEST_F(LaneletTest, id) {  // NOLINT
   EXPECT_EQ(100, constRitterLanelet.id());
 }
 
-TEST_F(LaneletTest, nullptrConstruct) {                                      // NOLINT
+TEST_F(LaneletTest, nullptrConstruct) {                                             // NOLINT
   EXPECT_THROW(Lanelet(std::shared_ptr<LaneletData>(nullptr)), NullptrError);       // NOLINT
   EXPECT_THROW(ConstLanelet(std::shared_ptr<LaneletData>(nullptr)), NullptrError);  // NOLINT
 }

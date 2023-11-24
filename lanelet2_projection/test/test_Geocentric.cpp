@@ -6,9 +6,7 @@ using GeocentricProjector = lanelet::projection::GeocentricProjector;
 
 class GeocentricProjectionTest : public ::testing::Test {
  public:
-  void SetUp() override {
-    geocentricProjector = std::make_shared<GeocentricProjector>();
-  }
+  void SetUp() override { geocentricProjector = std::make_shared<GeocentricProjector>(); }
   GeocentricProjector::Ptr geocentricProjector;
 
   // Lat, Lon, Ele with respect to the WGS84 ellipsoid

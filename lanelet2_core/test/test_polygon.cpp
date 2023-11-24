@@ -135,7 +135,7 @@ auto getZ(const T& p) -> std::enable_if_t<!traits::is2D<T>(), double> {
   return p.z();
 }
 template <typename T>
-auto getZ(const T & /*p*/) -> std::enable_if_t<traits::is2D<T>(), double> {
+auto getZ(const T& /*p*/) -> std::enable_if_t<traits::is2D<T>(), double> {
   return 0.;
 }
 

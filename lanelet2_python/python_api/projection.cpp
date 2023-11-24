@@ -1,6 +1,6 @@
-#include <lanelet2_projection/UTM.h>
 #include <lanelet2_projection/Geocentric.h>
 #include <lanelet2_projection/LocalCartesian.h>
+#include <lanelet2_projection/UTM.h>
 
 #include <boost/python.hpp>
 

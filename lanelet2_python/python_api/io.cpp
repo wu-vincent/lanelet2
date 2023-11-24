@@ -6,7 +6,9 @@ namespace py = boost::python;
 using namespace lanelet;
 
 struct DictToConfigurationConverter {
-  DictToConfigurationConverter() { py::converter::registry::push_back(&convertible, &construct, py::type_id<io::Configuration>()); }
+  DictToConfigurationConverter() {
+    py::converter::registry::push_back(&convertible, &construct, py::type_id<io::Configuration>());
+  }
   static void* convertible(PyObject* obj) {
     if (!PyDict_CheckExact(obj)) {  // NOLINT
       return nullptr;
@@ -42,15 +44,18 @@ py::tuple loadWithErrorWrapper(const std::string& filename, const Projector& pro
   return py::make_tuple(map, errs);
 }
 
-void writeWrapper(const std::string& filename, const LaneletMap& map, const Origin& origin, const Optional<io::Configuration>& params) {
+void writeWrapper(const std::string& filename, const LaneletMap& map, const Origin& origin,
+                  const Optional<io::Configuration>& params) {
   write(filename, map, origin, nullptr, params.get_value_or(io::Configuration()));
 }
 
-void writeProjectorWrapper(const std::string& filename, const LaneletMap& map, const Projector& projector, const Optional<io::Configuration>& params) {
+void writeProjectorWrapper(const std::string& filename, const LaneletMap& map, const Projector& projector,
+                           const Optional<io::Configuration>& params) {
   write(filename, map, projector, nullptr, params.get_value_or(io::Configuration()));
 }
 
-ErrorMessages writeWithErrorWrapper(const std::string& filename, const LaneletMap& map, const Projector& projector, const Optional<io::Configuration>& params) {
+ErrorMessages writeWithErrorWrapper(const std::string& filename, const LaneletMap& map, const Projector& projector,
+                                    const Optional<io::Configuration>& params) {
   ErrorMessages errs;
   write(filename, map, projector, &errs, params.get_value_or(io::Configuration()));
   return errs;
@@ -76,16 +81,21 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {  // NOLINT
   py::def("load", loadProjectorWrapper, (py::arg("filename"), py::arg("projector") = DefaultProjector()));
   py::def("load", loadWrapper, (py::arg("filename"), py::arg("origin")));
   py::def("loadRobust", loadWithErrorWrapper, py::arg("filename"),
-      "Loads a map robustly. Parser errors are returned as second member of "
-      "the tuple. If there are errors, the map will be incomplete somewhere.");
+          "Loads a map robustly. Parser errors are returned as second member of "
+          "the tuple. If there are errors, the map will be incomplete somewhere.");
 
-  py::def("write", writeProjectorWrapper, (py::arg("filename"), py::arg("map"), py::arg("projector"), py::arg("params") = Optional<io::Configuration>{}),
+  py::def(
+      "write", writeProjectorWrapper,
+      (py::arg("filename"), py::arg("map"), py::arg("projector"), py::arg("params") = Optional<io::Configuration>{}),
       "Writes the map to a file. The extension determines which format will "
       "be used (usually .osm)");
-  py::def("write", writeWrapper, (py::arg("filename"), py::arg("map"), py::arg("origin"), py::arg("params") = Optional<io::Configuration>{}),
-      "Writes the map to a file. The extension determines which format will "
-      "be used (usually .osm)");
-  py::def("writeRobust", writeWithErrorWrapper, (py::arg("filename"), py::arg("map"), py::arg("projector"), py::arg("params") = Optional<io::Configuration>{}),
+  py::def("write", writeWrapper,
+          (py::arg("filename"), py::arg("map"), py::arg("origin"), py::arg("params") = Optional<io::Configuration>{}),
+          "Writes the map to a file. The extension determines which format will "
+          "be used (usually .osm)");
+  py::def(
+      "writeRobust", writeWithErrorWrapper,
+      (py::arg("filename"), py::arg("map"), py::arg("projector"), py::arg("params") = Optional<io::Configuration>{}),
       "Writes a map robustly and returns writer errors. If there are errors, "
       "the map will be incomplete somewhere.");
 }

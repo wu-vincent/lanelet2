@@ -1142,7 +1142,8 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {  // NOLINT
       .def("removeRegulatoryElement", &Area::removeRegulatoryElement,
            "Removes a regulatory element, retunrs true on success", arg("regelem"))
       .def("outerBoundPolygon", &Area::outerBoundPolygon, "Returns the outer boundary as a CompoundPolygon3d")
-      .def("innerBoundPolygon", +[](const Area& /*ar*/) { throw std::runtime_error("innerBoundPolygon is deprecated. Use innerBoundPolygons instead!");}, "DEPRECATED. Using it throws an exception. Use innerBoundPolygons instead!")
+      .def("innerBoundPolygon", +[](const Area& /*ar*/) {
+            throw std::runtime_error("innerBoundPolygon is deprecated. Use innerBoundPolygons instead!");}, "DEPRECATED. Using it throws an exception. Use innerBoundPolygons instead!")
       .def("innerBoundPolygons", &Area::innerBoundPolygons,
            "Returns the inner boundaries as a list of CompoundPolygon3d")
       .def(

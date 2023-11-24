@@ -343,6 +343,7 @@ bool operator==(const File& lhs, const File& rhs) {
 File read(pugi::xml_document& node, Errors* errors) { return OsmFileParser::read(node, errors); }
 
 std::unique_ptr<pugi::xml_document> write(const File& file, const io::Configuration& params) {
-  return OsmFileWriter::write(file, params); }
+  return OsmFileWriter::write(file, params);
+}
 }  // namespace osm
 }  // namespace lanelet
