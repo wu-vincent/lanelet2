@@ -1,11 +1,11 @@
 #include "lanelet2_io/Io.h"
 
-#include <filesystem>
+#include <boost/filesystem.hpp>
 
 #include "lanelet2_io/Exceptions.h"
 #include "lanelet2_io/io_handlers/Factory.h"
 
-namespace fs = std::filesystem;
+namespace fs = boost::filesystem;
 
 namespace lanelet {
 namespace {

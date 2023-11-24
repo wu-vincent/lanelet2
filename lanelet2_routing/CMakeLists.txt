@@ -48,7 +48,7 @@ if (LANELET2_ENABLE_TESTING)
     include(GoogleTest)
     file(GLOB PROJECT_SOURCE_FILES_TEST "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
     add_executable("${PROJECT_NAME}_test" ${PROJECT_SOURCE_FILES_TEST})
-    target_link_libraries("${PROJECT_NAME}_test" PRIVATE GTest::gtest_main ${PROJECT_NAME})
+    target_link_libraries("${PROJECT_NAME}_test" PRIVATE GTest::gtest_main ${PROJECT_NAME} Boost::filesystem)
 
     if (WIN32)
         add_custom_command(TARGET "${PROJECT_NAME}_test" POST_BUILD

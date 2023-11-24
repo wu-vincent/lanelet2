@@ -477,13 +477,16 @@ class RoutingGraphTestData {
   }
 };
 
-// namespace data {                       // NOLINT
-// static RoutingGraphTestData testData;  // NOLINT
-// }  // namespace data
+namespace {  // NOLINT
+static RoutingGraphTestData& getTestData() {
+  static RoutingGraphTestData testData;  // NOLINT
+  return testData;
+}
+}  // namespace
 
 class RoutingGraphTest : public ::testing::Test {
  public:
-  inline static RoutingGraphTestData testData;
+  RoutingGraphTestData& getTestData();
   const std::unordered_map<Id, Lanelet>& lanelets{testData.lanelets};
   const std::unordered_map<Id, Area>& areas{testData.areas};
   const std::unordered_map<Id, Point3d>& points{testData.points};

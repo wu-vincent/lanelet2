@@ -1,4 +1,7 @@
+import glob
+
 from conan import ConanFile
+from conan.tools.apple import is_apple_os
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
 
@@ -26,7 +29,6 @@ class Lanelet2Conan(ConanFile):
         "boost/*:without_python": False,
     }
     without_boost_components = [
-        "atomic",
         "chrono",
         "container",
         "context",
@@ -35,7 +37,6 @@ class Lanelet2Conan(ConanFile):
         "date_time",
         "exception",
         "fiber",
-        "filesystem",
         "graph",
         "iostreams",
         "json",
@@ -47,7 +48,6 @@ class Lanelet2Conan(ConanFile):
         "random",
         "regex",
         "stacktrace",
-        "system",
         "test",
         "thread",
         "timer",
@@ -97,11 +97,17 @@ class Lanelet2Conan(ConanFile):
         tc = CMakeToolchain(self)
         tc.generate()
 
+        rpath = self.build_path / "lib"
         for dep in self.dependencies.values():
             # for auditwheel, delocate and (or) delvewheel
-            copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(self.build_path / "lib"))
-            copy(self, "*.so*", dep.cpp_info.libdirs[0], str(self.build_path / "lib"))
-            copy(self, "*.dll", dep.cpp_info.bindirs[0], str(self.build_path / "lib"))
+            copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(rpath))
+            copy(self, "*.so*", dep.cpp_info.libdirs[0], str(rpath))
+            copy(self, "*.dll", dep.cpp_info.bindirs[0], str(rpath))
+
+        if is_apple_os(self):
+            for file_path in glob.glob(str(rpath / "libboost_*.dylib")):
+                command = f"install_name_tool -add_rpath @loader_path \"{file_path}\""
+                self.run(command)
 
     def build(self):
         cmake = CMake(self)

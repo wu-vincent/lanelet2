@@ -71,7 +71,7 @@ pip install lanelet2x
 
 ### Manual installation
 
-At least **C++17** is required.
+At least **C++14** is required.
 
 ### Dependencies
 

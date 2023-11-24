@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <filesystem>
+#include <boost/filesystem.hpp>
 
 #include "lanelet2_routing/Exceptions.h"
 #include "lanelet2_routing/RoutingGraph.h"
@@ -9,7 +9,7 @@
 using namespace lanelet;
 using namespace lanelet::routing;
 using namespace lanelet::routing::tests;
-namespace fs = std::filesystem;
+namespace fs = boost::filesystem;
 
 class Tempfile {
  public:
