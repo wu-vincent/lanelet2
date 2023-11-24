@@ -97,7 +97,7 @@ class Lanelet2Conan(ConanFile):
         tc = CMakeToolchain(self)
         tc.generate()
 
-        rpath = self.build_path / "lib"
+        rpath = self.source_path / "build" / "lib"
         for dep in self.dependencies.values():
             # for auditwheel, delocate and (or) delvewheel
             copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(rpath))
