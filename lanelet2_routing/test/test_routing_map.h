@@ -486,7 +486,7 @@ static RoutingGraphTestData& getTestData() {
 
 class RoutingGraphTest : public ::testing::Test {
  public:
-  RoutingGraphTestData& getTestData();
+  RoutingGraphTestData& testData = getTestData();
   const std::unordered_map<Id, Lanelet>& lanelets{testData.lanelets};
   const std::unordered_map<Id, Area>& areas{testData.areas};
   const std::unordered_map<Id, Point3d>& points{testData.points};
