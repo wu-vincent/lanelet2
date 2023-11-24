@@ -1,5 +1,4 @@
 from conan import ConanFile
-from conan.tools.apple import is_apple_os
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
 
@@ -99,9 +98,10 @@ class Lanelet2Conan(ConanFile):
         tc.generate()
 
         for dep in self.dependencies.values():
-            copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(self.build_path / "repair"))
-            copy(self, "*.so*", dep.cpp_info.libdirs[0], str(self.build_path / "repair"))
-            copy(self, "*.dll", dep.cpp_info.bindirs[0], str(self.build_path / "repair"))
+            # for auditwheel, delocate and (or) delvewheel
+            copy(self, "*.dylib*", dep.cpp_info.libdirs[0], str(self.build_path / "lib"))
+            copy(self, "*.so*", dep.cpp_info.libdirs[0], str(self.build_path / "lib"))
+            copy(self, "*.dll", dep.cpp_info.bindirs[0], str(self.build_path / "lib"))
 
     def build(self):
         cmake = CMake(self)
