@@ -9,13 +9,3 @@ add_custom_command(
         TARGET ${PROJECT_NAME}
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
 )
-
-#############
-## Install ##
-#############
-# Install all targets, headers by default and scripts and other files if specified (folders or files).
-# This command also exports libraries and config files for dependent packages and this supersedes catkin_package.
-if (NOT DEFINED SKBUILD)
-    install(DIRECTORY res/ DESTINATION "res/")
-    install(DIRECTORY josm/ DESTINATION "res/" PATTERN ".gitignore" EXCLUDE)
-endif ()
