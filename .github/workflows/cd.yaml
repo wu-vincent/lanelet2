@@ -51,12 +51,6 @@ jobs:
       - name: Build sdist
         run: pipx run build --sdist
 
-      - name: Upload sdist
-        uses: actions/upload-artifact@v3
-        with:
-          name: lanelet2x.${{ matrix.python }}-${{ matrix.machine.platform }}.tar.gz
-          path: dist/*.tar.gz
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
