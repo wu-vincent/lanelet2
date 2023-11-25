@@ -1,47 +1,47 @@
 # this file contains functions needed by qtcreator to provide a better introspection into lanelet's objects.
 # simply specify its path in qtCreator under Options->Debugger->Locals&Expressionts->Extra debugging helpers.
-from dumper import *
+from dumper import Children, SubItem
 
 
-def vectorSize(vectorValue):
-    innerType = vectorValue.type[0]
-    (start, finish, alloc) = vectorValue.split("ppp")
-    size = int((finish - start) / innerType.size())
+def get_vector_size(vector_value):
+    inner_type = vector_value.type[0]
+    (start, finish, alloc) = vector_value.split("ppp")
+    size = int((finish - start) / inner_type.size())
     return size
 
 
-def mapSize(mapValue):
-    (compare, stuff, parent, left, right, size) = mapValue.split("pppppp")
+def get_map_size(map_value):
+    (compare, stuff, parent, left, right, size) = map_value.split("pppppp")
     return size
 
 
-def unorderedMapSize(value):
+def get_unordered_map_size(value):
     try:
         # gcc ~= 4.7
         size = value["_M_element_count"].integer()
         start = value["_M_before_begin"]["_M_nxt"]
-    except BaseException:
+    except (BaseException,):
         try:
             # libc++ (Mac)
             size = value["_M_h"]["_M_element_count"].integer()
             start = value["_M_h"]["_M_bbegin"]["_M_node"]["_M_nxt"]
-        except BaseException:
+        except (BaseException,):
             try:
                 # gcc 4.9.1
                 size = value["_M_h"]["_M_element_count"].integer()
                 start = value["_M_h"]["_M_before_begin"]["_M_nxt"]
-            except BaseException:
+            except (BaseException,):
                 # gcc 4.6.2
                 size = value["_M_element_count"].integer()
                 start = value["_M_buckets"].dereference()
     return size
 
 
-def displayStringValue(d, value):
-    innerType = value.type[0]
+def display_string_value(d, value):
+    inner_type = value.type[0]
     (data, size) = value.split("pI")
     d.check(0 <= size)  # and size <= alloc and alloc <= 100*1000*1000)
-    d.putCharArrayHelper(data, size, innerType, d.currentItemFormat(), makeExpandable=False)
+    d.putCharArrayHelper(data, size, inner_type, d.currentItemFormat(), makeExpandable=False)
 
 
 def qdump__lanelet__LineString2d(d, value):
@@ -167,14 +167,14 @@ def qdump__lanelet__ConstArea(d, value):
 def qdump__lanelet__CompoundPolygon3d(d, value):
     data = value["data_"]["_M_ptr"].dereference()
 
-    d.putItemCount(vectorSize(data["ls_"]))
+    d.putItemCount(get_vector_size(data["ls_"]))
     if d.isExpanded():
         with Children(d):
             d.putSubItem("data", data)
 
 
 def qdump__lanelet__HybridMap(d, value):
-    d.putItemCount(mapSize(value["m_"]))
+    d.putItemCount(get_map_size(value["m_"]))
     d.putNumChild(2)
     if d.isExpanded():
         with Children(d):
@@ -183,7 +183,7 @@ def qdump__lanelet__HybridMap(d, value):
 
 
 def qdump__lanelet__Attribute(d, value):
-    displayStringValue(d, value["value_"])
+    display_string_value(d, value["value_"])
     d.putNumChild(2)
     if d.isExpanded():
         with Children(d):
@@ -204,7 +204,7 @@ def qdump__lanelet__RegulatoryElement(d, value):
 
 def qdump__lanelet__PrimitiveLayer(d, value):
     umap = value["elements_"]
-    d.putItemCount(unorderedMapSize(umap))
+    d.putItemCount(get_unordered_map_size(umap))
     d.putNumChild(2)
     if d.isExpanded():
         with Children(d):
