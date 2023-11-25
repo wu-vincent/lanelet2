@@ -29,9 +29,16 @@ jobs:
         env:
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.machine.platform }}
 
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: lanelet2x.${{ matrix.python }}-${{ matrix.machine.platform }}.whl
+          path: ./wheelhouse/*.whl
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: artifact
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -44,8 +51,16 @@ jobs:
       - name: Build sdist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload sdist
+        uses: actions/upload-artifact@v3
         with:
+          name: lanelet2x.${{ matrix.python }}-${{ matrix.machine.platform }}.tar.gz
+          path: dist/*.tar.gz
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact
           path: dist/*.tar.gz
 
   publish:

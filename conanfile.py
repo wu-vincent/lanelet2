@@ -9,12 +9,12 @@ __version__ = "1.2.1"
 
 
 class Lanelet2Conan(ConanFile):
-    name = "lanelet2x"
+    name = "lanelet2"
     version = __version__
 
     # Optional metadata
     license = "BSD"
-    url = "https://github.com/wu-vincent/lanelet2"
+    url = "https://github.com/wu-vincent/lanelet2x"
     description = (
         "Your favorite map handling framework for automated driving, now standalone and with cross-platform support."
     )
@@ -23,7 +23,7 @@ class Lanelet2Conan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True]}
     default_options = {
-        "shared": False,
+        "shared": True,
         "fPIC": True,
         "boost/*:shared": True,
         "boost/*:without_python": False,
@@ -60,10 +60,10 @@ class Lanelet2Conan(ConanFile):
     project_libs = [
         "lanelet2_core",
         "lanelet2_io",
-        "lanelet2_matching",
-        "lanelet2_projection",
         "lanelet2_traffic_rules",
+        "lanelet2_projection",
         "lanelet2_routing",
+        "lanelet2_matching",
         "lanelet2_validation",
     ]
 
@@ -106,7 +106,7 @@ class Lanelet2Conan(ConanFile):
 
         if is_apple_os(self):
             for file_path in glob.glob(str(rpath / "libboost_*.dylib")):
-                command = f"install_name_tool -add_rpath @loader_path \"{file_path}\""
+                command = f'install_name_tool -add_rpath @loader_path "{file_path}"'
                 self.run(command)
 
     def build(self):
@@ -121,8 +121,35 @@ class Lanelet2Conan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = []
-        for lib_name in list(reversed(self.project_libs)):
-            self.cpp_info.components[lib_name].libs = [lib_name]
-            self.cpp_info.components[lib_name].set_property("cmake_target_name",
-                                                            lib_name.replace("lanelet2_", "lanelet2::"))
-            self.cpp_info.libs.append(lib_name if self.options.shared else f"{lib_name}-static")
+        for lib in self.project_libs:
+            lib_name = lib if self.options.shared else f"{lib}-static"
+            self.cpp_info.components[lib].libs = [lib_name]
+            self.cpp_info.components[lib].set_property("cmake_target_name", lib.replace("lanelet2_", "lanelet2::"))
+
+        self.cpp_info.components["lanelet2_io"].requires = [
+            "lanelet2_core",
+        ]
+        self.cpp_info.components["lanelet2_traffic_rules"].requires = [
+            "lanelet2_core",
+        ]
+        self.cpp_info.components["lanelet2_projection"].requires = [
+            "lanelet2_core",
+            "lanelet2_io",
+        ]
+        self.cpp_info.components["lanelet2_routing"].requires = [
+            "lanelet2_core",
+            "lanelet2_traffic_rules",
+        ]
+        self.cpp_info.components["lanelet2_matching"].requires = [
+            "lanelet2_core",
+            "lanelet2_io",
+            "lanelet2_projection",
+            "lanelet2_traffic_rules",
+        ]
+        self.cpp_info.components["lanelet2_validation"].requires = [
+            "lanelet2_core",
+            "lanelet2_io",
+            "lanelet2_projection",
+            "lanelet2_traffic_rules",
+            "lanelet2_routing",
+        ]

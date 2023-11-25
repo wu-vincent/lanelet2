@@ -66,7 +66,7 @@ class Point3dPrinter:
         self.val = val
 
     def to_string(self):
-        parr = self.val["constData_"]["_M_ptr"].dereference()["point"]['m_storage']['m_data']['array']
+        parr = self.val["constData_"]["_M_ptr"].dereference()["point"]["m_storage"]["m_data"]["array"]
         return "Point3d (x={}, y={}, z={})".format(parr[0], parr[1], parr[2])
 
     def children(self):
@@ -85,7 +85,7 @@ class Point3dPrinter:
 
             data = self.val["constData_"]["_M_ptr"].dereference()
             p = data["point"]
-            parr = p['m_storage']['m_data']['array']
+            parr = p["m_storage"]["m_data"]["array"]
 
             datadict = {
                 1: ("x", parr[0]),
@@ -205,19 +205,29 @@ class RegulatoryElementPrinter:
 def lookup_type(val):
     type_and_mod = str(val.type).split(" ")  # type and modifiers
 
-    if 'lanelet::Lanelet' in type_and_mod or 'lanelet::ConstLanelet' in type_and_mod:
+    if "lanelet::Lanelet" in type_and_mod or "lanelet::ConstLanelet" in type_and_mod:
         return LaneletPrinter(val)
-    elif 'lanelet::Point3d' in type_and_mod or 'lanelet::ConstPoint3d' in type_and_mod or \
-            'lanelet::Point2d' in type_and_mod or 'lanelet::ConstPoint2d' in type_and_mod:
+    elif (
+        "lanelet::Point3d" in type_and_mod
+        or "lanelet::ConstPoint3d" in type_and_mod
+        or "lanelet::Point2d" in type_and_mod
+        or "lanelet::ConstPoint2d" in type_and_mod
+    ):
         return Point3dPrinter(val)
-    elif 'lanelet::LineString3d' in type_and_mod or 'lanelet::ConstLineString3d' in type_and_mod or \
-            'lanelet::LineString2d' in type_and_mod or 'lanelet::ConstLineString2d' in type_and_mod or \
-            'lanelet::Polygon3d' in type_and_mod or 'lanelet::ConstPolygon3d' in type_and_mod or \
-            'lanelet::Polygon2d' in type_and_mod or 'lanelet::ConstPolygon2d' in type_and_mod:
+    elif (
+        "lanelet::LineString3d" in type_and_mod
+        or "lanelet::ConstLineString3d" in type_and_mod
+        or "lanelet::LineString2d" in type_and_mod
+        or "lanelet::ConstLineString2d" in type_and_mod
+        or "lanelet::Polygon3d" in type_and_mod
+        or "lanelet::ConstPolygon3d" in type_and_mod
+        or "lanelet::Polygon2d" in type_and_mod
+        or "lanelet::ConstPolygon2d" in type_and_mod
+    ):
         return LineString3dPrinter(val)
-    elif 'lanelet::Attribute' in type_and_mod:
+    elif "lanelet::Attribute" in type_and_mod:
         return AttributePrinter(val)
-    elif 'lanelet::RegulatoryElement' in type_and_mod:
+    elif "lanelet::RegulatoryElement" in type_and_mod:
         return RegulatoryElementPrinter(val)
     return None
 

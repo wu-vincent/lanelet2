@@ -52,14 +52,17 @@ cmake.args = ["--preset conan-default"] # override for multi-configuration gener
 [tool.cibuildwheel]
 skip = ["*-win32", "*-musllinux_x86_64", "*_i686"]
 test-requires = "pytest"
-test-command = "pytest {project}/lanelet2_python/test"
+test-command = [
+    "pytest {project}/lanelet2_python/test",
+    "pytest {project}/lanelet2_examples/test"
+]
 
 [tool.cibuildwheel.windows]
 before-build = [
     "python -m pip install --upgrade pip",
     "pip install -r requirements.txt",
     "conan profile detect --force",
-    "conan install . --output-folder=build --build=*"
+    "conan install . --output-folder=build --build=missing"
 ]
 
 [tool.cibuildwheel.linux]
@@ -83,5 +86,5 @@ before-build = [
     "pip install -r requirements.txt",
     "conan profile detect --force",
     # set the generator to use ninja because scikit-build-core will default to ninja
-    "conan install . --output-folder=build --build=* -c tools.cmake.cmaketoolchain:generator=Ninja"
+    "conan install . --output-folder=build --build=missing -c tools.cmake.cmaketoolchain:generator=Ninja"
 ]

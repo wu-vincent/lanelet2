@@ -40,6 +40,6 @@ if (DEFINED SKBUILD)
         endforeach ()
     endif ()
 else ()
-    install(DIRECTORY scripts/ DESTINATION "scripts/")
+    install(DIRECTORY scripts/ DESTINATION "scripts")
 endif ()
 

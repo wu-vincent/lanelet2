@@ -2,7 +2,11 @@ import unittest
 
 from lanelet2.core import BasicPoint3d, GPSPoint
 from lanelet2.io import Origin
-from lanelet2.projection import UtmProjector, GeocentricProjector, LocalCartesianProjector
+from lanelet2.projection import (
+    UtmProjector,
+    GeocentricProjector,
+    LocalCartesianProjector,
+)
 
 
 class MatchingApiTestCase(unittest.TestCase):

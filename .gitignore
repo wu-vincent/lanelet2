@@ -3,5 +3,5 @@
 setup.py
 CMakeLists.txt.user
 CMakeUserPresets.json
-build/*
+**/build/*
 .idea

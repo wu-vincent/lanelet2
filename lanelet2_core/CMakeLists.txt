@@ -41,7 +41,7 @@ if (NOT DEFINED SKBUILD)
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
     install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
     install(DIRECTORY doc/ DESTINATION "doc/${PROJECT_NAME}")
-    install(DIRECTORY scripts/ DESTINATION "scripts/")
+    install(DIRECTORY scripts/ DESTINATION "scripts")
 endif ()
 
 #############

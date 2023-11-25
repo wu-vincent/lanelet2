@@ -11,7 +11,7 @@ def vectorSize(vectorValue):
 
 
 def mapSize(mapValue):
-    (compare, stuff, parent, left, right, size) = mapValue.split('pppppp')
+    (compare, stuff, parent, left, right, size) = mapValue.split("pppppp")
     return size
 
 
@@ -99,7 +99,7 @@ def qdump__lanelet__Point3d(d, value):
     if d.isExpanded():
         p = data["point"]
         with Children(d):
-            (x, y, z) = p.split('ddd')
+            (x, y, z) = p.split("ddd")
             with SubItem(d, "x"):
                 d.putValue(x)
                 d.putType("double")
@@ -167,14 +167,14 @@ def qdump__lanelet__ConstArea(d, value):
 def qdump__lanelet__CompoundPolygon3d(d, value):
     data = value["data_"]["_M_ptr"].dereference()
 
-    d.putItemCount(vectorSize(data['ls_']))
+    d.putItemCount(vectorSize(data["ls_"]))
     if d.isExpanded():
         with Children(d):
             d.putSubItem("data", data)
 
 
 def qdump__lanelet__HybridMap(d, value):
-    d.putItemCount(mapSize(value['m_']))
+    d.putItemCount(mapSize(value["m_"]))
     d.putNumChild(2)
     if d.isExpanded():
         with Children(d):

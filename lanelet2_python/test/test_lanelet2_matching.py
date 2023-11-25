@@ -84,7 +84,8 @@ class MatchingApiTestCase(unittest.TestCase):
         self.assertTrue(isinstance(obj_with_cov_matches[0], ConstLaneletMatchProbabilistic))
 
         traffic_rules = lanelet2.traffic_rules.create(
-            lanelet2.traffic_rules.Locations.Germany, lanelet2.traffic_rules.Participants.Vehicle
+            lanelet2.traffic_rules.Locations.Germany,
+            lanelet2.traffic_rules.Participants.Vehicle,
         )
 
         obj_matches_rule_compliant = removeNonRuleCompliantMatches(obj_matches, traffic_rules)
