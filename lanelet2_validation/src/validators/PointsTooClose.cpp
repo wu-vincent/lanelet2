@@ -6,9 +6,6 @@
 
 namespace lanelet {
 namespace validation {
-namespace {
-RegisterMapValidator<PointsTooCloseChecker> reg;
-}  // namespace
 
 Issues PointsTooCloseChecker::operator()(const lanelet::LaneletMap& map) {
   Issues issues;

@@ -8,9 +8,6 @@
 
 namespace lanelet {
 namespace validation {
-namespace {
-RegisterMapValidator<CurvatureTooBigChecker> reg1;
-}  // namespace
 
 Issues CurvatureTooBigChecker::operator()(const LaneletMap& map) {
   Issues issues;

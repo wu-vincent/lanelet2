@@ -1,5 +1,7 @@
 #include "lanelet2_traffic_rules/TrafficRulesFactory.h"
 
+#include "lanelet2_traffic_rules/GermanTrafficRules.h"
+
 namespace lanelet {
 
 #if __cplusplus < 201703L
@@ -7,6 +9,12 @@ constexpr char Locations::Germany[];
 #endif
 
 namespace traffic_rules {
+namespace {
+RegisterTrafficRules<GermanVehicle> gvRules(Locations::Germany, Participants::Vehicle);
+RegisterTrafficRules<GermanPedestrian> gpRules(Locations::Germany, Participants::Pedestrian);
+RegisterTrafficRules<GermanBicycle> gbRules(Locations::Germany, Participants::Bicycle);
+}  // namespace
+
 TrafficRulesUPtr TrafficRulesFactory::create(const std::string& location, const std::string& participant,
                                              TrafficRules::Configuration configuration) {
   auto& registry = instance().registry_;

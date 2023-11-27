@@ -13,10 +13,6 @@ namespace lanelet {
 namespace traffic_rules {
 
 namespace {
-RegisterTrafficRules<GermanVehicle> gvRules(Locations::Germany, Participants::Vehicle);
-RegisterTrafficRules<GermanPedestrian> gpRules(Locations::Germany, Participants::Pedestrian);
-RegisterTrafficRules<GermanBicycle> gbRules(Locations::Germany, Participants::Bicycle);
-
 Velocity trafficSignToVelocity(const std::string& typeString) {
   using namespace lanelet::units::literals;
   const static std::map<std::string, Velocity> StrToVelocity{

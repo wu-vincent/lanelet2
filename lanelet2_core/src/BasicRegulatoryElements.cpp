@@ -152,11 +152,6 @@ RegulatoryElementDataPtr constructAllWayStopData(Id id, const AttributeMap& attr
 }
 }  // namespace
 
-static RegisterRegulatoryElement<TrafficLight> regTraffic;
-static RegisterRegulatoryElement<RightOfWay> regRightOfWay;
-static RegisterRegulatoryElement<TrafficSign> regTrafficSign;
-static RegisterRegulatoryElement<SpeedLimit> regSpeedLimit;
-static RegisterRegulatoryElement<AllWayStop> regAllWayStop;
 #if __cplusplus < 201703L
 constexpr char TrafficLight::RuleName[];
 constexpr char RightOfWay::RuleName[];

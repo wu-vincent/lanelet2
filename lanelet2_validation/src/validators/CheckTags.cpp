@@ -11,11 +11,6 @@ using Values = std::vector<std::string>;
 using ValueMap = std::map<std::string, Values>;
 
 namespace {
-RegisterMapValidator<BoolTags> regBool;
-RegisterMapValidator<UnknownTags> regUnknown;
-RegisterMapValidator<UnknownTagValue> regUnknownValue;
-RegisterMapValidator<MandatoryTags> regMandatoryTags;
-
 bool startsWith(const std::string& str, const std::string& substr) {  // NOLINT
   return str.compare(0, substr.size(), substr) == 0;
 }

@@ -69,13 +69,15 @@ jobs:
   #        run: echo "Some files failed the linting checks!" && exit 1
 
   test:
+    name: Build on ${{ matrix.os }} (shared=${{ matrix.options.shared }})
     needs: formatting
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         options:
-          - { shared: 'True' }
+          - { shared: 'True' } # shared library
+          - { shared: 'False' } # static library
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout Code

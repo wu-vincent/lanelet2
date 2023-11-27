@@ -7,7 +7,6 @@
 namespace lanelet {
 namespace validation {
 namespace {
-RegisterMapValidator<DuplicatedPointsChecker> reg;
 
 template <typename T>
 Optional<Id> hasDuplicates(const T& elem) {

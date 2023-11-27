@@ -5,18 +5,10 @@
 #include <fstream>
 
 #include "lanelet2_io/Exceptions.h"
-#include "lanelet2_io/io_handlers/Factory.h"
 #include "lanelet2_io/io_handlers/Serialize.h"
 
 namespace lanelet {
 namespace io_handlers {
-
-namespace {
-// register with factories
-RegisterParser<BinParser> regParser;
-RegisterWriter<BinWriter> regWriter;
-
-}  // namespace
 
 void BinWriter::write(const std::string& filename, const LaneletMap& laneletMap, ErrorMessages& /*errors*/,
                       const io::Configuration& /*params*/) const {

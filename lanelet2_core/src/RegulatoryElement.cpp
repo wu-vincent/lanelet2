@@ -85,6 +85,12 @@ class ToConstVisitor : public RuleParameterVisitor {
 }  // namespace
 
 static RegisterRegulatoryElement<GenericRegulatoryElement> genRegelem;
+static RegisterRegulatoryElement<TrafficLight> regTraffic;
+static RegisterRegulatoryElement<RightOfWay> regRightOfWay;
+static RegisterRegulatoryElement<TrafficSign> regTrafficSign;
+static RegisterRegulatoryElement<SpeedLimit> regSpeedLimit;
+static RegisterRegulatoryElement<AllWayStop> regAllWayStop;
+
 #if __cplusplus < 201703L
 constexpr char GenericRegulatoryElement::RuleName[];
 

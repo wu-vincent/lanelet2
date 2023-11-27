@@ -1,10 +1,18 @@
 #include "lanelet2_io/io_handlers/Factory.h"
 
 #include "lanelet2_io/Exceptions.h"
+#include "lanelet2_io/io_handlers/BinHandler.h"
+#include "lanelet2_io/io_handlers/OsmHandler.h"
 
 namespace lanelet {
 namespace io_handlers {
 namespace {
+// register with factories
+RegisterParser<BinParser> regBinParser;
+RegisterWriter<BinWriter> regBinWriter;
+RegisterParser<OsmParser> regOsmParser;
+RegisterWriter<OsmWriter> regOsmWriter;
+
 std::string format(const std::vector<std::string>& strings, const std::string& delim = ", ") {
   std::string formatted;
   for (const auto& str : strings) {

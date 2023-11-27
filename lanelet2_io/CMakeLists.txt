@@ -50,14 +50,14 @@ if (NOT BUILD_TESTING STREQUAL OFF)
     include(GoogleTest)
     file(GLOB PROJECT_SOURCE_FILES_TEST "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
     add_executable("${PROJECT_NAME}_test" ${PROJECT_SOURCE_FILES_TEST})
+    target_compile_definitions("${PROJECT_NAME}_test" PRIVATE -DPKG_DIR="${CMAKE_CURRENT_LIST_DIR}")
     target_link_libraries("${PROJECT_NAME}_test" PRIVATE GTest::gtest_main ${PROJECT_NAME})
 
     if (WIN32)
         add_custom_command(TARGET "${PROJECT_NAME}_test" POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}_test>" "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>"
+                COMMAND ${CMAKE_COMMAND} -E copy -t "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>" "$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}_test>"
                 COMMAND_EXPAND_LISTS)
     endif ()
 
     gtest_discover_tests("${PROJECT_NAME}_test")
-    add_dependencies("${PROJECT_NAME}_test" lanelet2_maps)
 endif ()

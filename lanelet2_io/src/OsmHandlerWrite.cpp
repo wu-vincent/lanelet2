@@ -13,9 +13,6 @@ namespace io_handlers {
 
 using Errors = std::vector<std::string>;
 namespace {
-// register with factories
-RegisterWriter<OsmWriter> regWriter;
-
 struct UnresolvedRole {
   Id relationId{};
   Id referencedRoleId{};

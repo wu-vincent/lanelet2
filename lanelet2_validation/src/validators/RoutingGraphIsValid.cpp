@@ -6,9 +6,6 @@
 
 namespace lanelet {
 namespace validation {
-namespace {
-RegisterRoutingGraphValidator<RoutingGraphIsValid> reg;
-}  // namespace
 
 Issues RoutingGraphIsValid::operator()(const routing::RoutingGraph& graph,
                                        const traffic_rules::TrafficRules& /*rules*/) {

@@ -53,10 +53,9 @@ if (NOT BUILD_TESTING STREQUAL OFF)
 
     if (WIN32)
         add_custom_command(TARGET "${PROJECT_NAME}_test" POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}_test>" "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>"
+                COMMAND ${CMAKE_COMMAND} -E copy -t "$<TARGET_FILE_DIR:${PROJECT_NAME}_test>" "$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}_test>"
                 COMMAND_EXPAND_LISTS)
     endif ()
 
     gtest_discover_tests("${PROJECT_NAME}_test")
-    add_dependencies("${PROJECT_NAME}_test" lanelet2_maps)
 endif ()

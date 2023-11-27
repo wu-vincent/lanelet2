@@ -2,6 +2,7 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <cstdio>
 #include <fstream>
+#include <string>
 
 #include "TestSetup.h"
 #include "gtest/gtest.h"
@@ -115,7 +116,7 @@ TEST(BinHandler, explicitIO) {  // NOLINT
 
 TEST(BinHandler, fullMap) {
   Origin origin({49, 8.4, 0});
-  std::string filenameIn = "../lanelet2_maps/res/mapping_example.osm";
+  std::string filenameIn = std::string(PKG_DIR) + "/../lanelet2_maps/res/mapping_example.osm";
   auto map = lanelet::load(filenameIn, origin);
   auto llt = map->laneletLayer.find(44968);
   writeAndLoad(*llt);

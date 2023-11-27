@@ -20,8 +20,6 @@ namespace io_handlers {
 using Errors = std::vector<std::string>;
 
 namespace {
-// register with factories
-RegisterParser<OsmParser> regParser;
 using traits::to2D;
 bool isValid(const LineStrings3d& lss) {
   BasicPolygon2d ls(utils::concatenate(lss, [](const auto& elem) { return to2D(elem).basicLineString(); }));

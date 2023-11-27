@@ -1,8 +1,25 @@
 #include "lanelet2_validation/ValidatorFactory.h"
 
+#include "lanelet2_validation/validators/mapping/BoolTags.h"
+#include "lanelet2_validation/validators/mapping/CurvatureTooBig.h"
+#include "lanelet2_validation/validators/mapping/DuplicatedPoints.h"
+#include "lanelet2_validation/validators/mapping/MandatoryTags.h"
+#include "lanelet2_validation/validators/mapping/PointsTooClose.h"
+#include "lanelet2_validation/validators/mapping/UnknownTagValue.h"
+#include "lanelet2_validation/validators/mapping/UnknownTags.h"
+#include "lanelet2_validation/validators/routing/RoutingGraphIsValid.h"
+
 namespace lanelet {
 namespace validation {
 namespace {
+RegisterMapValidator<BoolTags> regBoolTags;
+RegisterMapValidator<UnknownTags> regUnknownTags;
+RegisterMapValidator<UnknownTagValue> regUnknownTagValue;
+RegisterMapValidator<MandatoryTags> regMandatoryTags;
+RegisterMapValidator<CurvatureTooBigChecker> regCurvatureTooBig;
+RegisterMapValidator<DuplicatedPointsChecker> regDuplicatedPoints;
+RegisterMapValidator<PointsTooCloseChecker> regPointsTooClose;
+RegisterRoutingGraphValidator<RoutingGraphIsValid> regRoutingGraphIsValid;
 
 std::vector<std::string> matchSingleRegex(const std::regex& regex, const std::vector<std::string>& toMatch) {
   std::vector<std::string> matches;
