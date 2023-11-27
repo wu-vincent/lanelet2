@@ -74,6 +74,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
+        options:
+          - { shared: 'True' }
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout Code
@@ -90,23 +92,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create Conan build
+      - name: Build with Conan
         run: |
           conan profile detect --force
-          conan install . --output-folder=build --build=missing
-
-      - name: Build with CMake on Windows
-        if: runner.os == 'Windows'
-        run: |
-          cmake -S . -B build --preset conan-default
-          cmake --build build --config Release
-
-      - name: Build with CMake on Linux and macOS
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        run: |
-          cmake -S . -B build --preset conan-release -DCMAKE_BUILD_TYPE=Release
-          cmake --build build
-
-      - name: Test with CTest
-        run: |
-          ctest --test-dir build
+          conan create . --build=missing -o shared=${{ matrix.options.shared }}
