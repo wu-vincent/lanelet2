@@ -40,8 +40,6 @@ cmake.define = { BUILD_TESTING = "OFF" }
 cmake.build-type = "Release"
 wheel.packages = ["lanelet2_python/src/lanelet2"]
 wheel.license-files = ["LICENSE", "CODEOWNERS"]
-logging.level = "DEBUG"
-cmake.verbose = true
 
 [tool.scikit-build.metadata.version]
 provider = "scikit_build_core.metadata.regex"
@@ -64,12 +62,12 @@ before-build = [
     "python -m pip install --upgrade pip",
     "pip install -r requirements.txt",
     "conan profile detect --force",
-    "conan install . --output-folder=build --build=missing"
+    "conan install . --build=missing -o shared=True"
 ]
 
 [tool.cibuildwheel.linux]
 before-build = [
-    # here, we restore libpython*.a - otherwise conan will fail when adding boost::python
+    # Restore libpython*.a - essential for conan's boost::python to locate the Python library. Without this, the process fails.
     # see https://github.com/pypa/manylinux/blob/main/docker/build_scripts/finalize-python.sh
     "pushd /opt/_internal",
     "tar -xJf static-libs-for-embedding-only.tar.xz",
@@ -77,9 +75,9 @@ before-build = [
     "python -m pip install --upgrade pip",
     "pip install -r requirements.txt",
     "conan profile detect --force",
-    # we force the build of everything from source - prebuilt b2 does not work in manylinux
-    # also set the generator to use ninja because scikit-build-core will default to ninja
-    "conan install . --output-folder=build --build=* -c tools.cmake.cmaketoolchain:generator=Ninja"
+    # Force the building of all dependencies from source, as prebuilt b2 is incompatible on manylinux.
+    # Set the generator to use Ninja, as scikit-build-core defaults to Ninja for cmake generation.
+    "conan install . --build=* -o shared=True -c tools.cmake.cmaketoolchain:generator=Ninja"
 ]
 
 [tool.cibuildwheel.macos]
@@ -87,6 +85,6 @@ before-build = [
     "python -m pip install --upgrade pip",
     "pip install -r requirements.txt",
     "conan profile detect --force",
-    # set the generator to use ninja because scikit-build-core will default to ninja
-    "conan install . --output-folder=build --build=missing -c tools.cmake.cmaketoolchain:generator=Ninja"
+    # Set the generator to use Ninja, as scikit-build-core defaults to Ninja for cmake generation.
+    "conan install . --build=missing -o shared=True -c tools.cmake.cmaketoolchain:generator=Ninja"
 ]

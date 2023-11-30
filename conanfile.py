@@ -23,7 +23,7 @@ class Lanelet2Conan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True]}
     default_options = {
-        "shared": True,
+        "shared": False,
         "fPIC": True,
         "boost/*:shared": True,
         "boost/*:without_python": False,
@@ -57,20 +57,10 @@ class Lanelet2Conan(ConanFile):
     ]
     default_options.update((f"boost/*:without_{component}", True) for component in without_boost_components)
 
-    project_libs = [
-        "lanelet2_core",
-        "lanelet2_io",
-        "lanelet2_traffic_rules",
-        "lanelet2_projection",
-        "lanelet2_routing",
-        "lanelet2_matching",
-        "lanelet2_validation",
-    ]
-
     exports_sources = ["CMakeLists.txt", "lanelet2_*/*"]
 
     def requirements(self):
-        self.requires("boost/[>=1.75.0 <=1.81.0]")
+        self.requires("boost/[>=1.75.0 <=1.81.0]", headers=True, transitive_headers=True)
         self.requires("eigen/3.4.0")
         self.requires("geographiclib/1.52")
         self.requires("pugixml/1.13")
@@ -121,7 +111,15 @@ class Lanelet2Conan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = []
-        for lib in self.project_libs:
+        for lib in [
+            "lanelet2_core",
+            "lanelet2_io",
+            "lanelet2_traffic_rules",
+            "lanelet2_projection",
+            "lanelet2_routing",
+            "lanelet2_matching",
+            "lanelet2_validation",
+        ]:
             lib_name = lib if self.options.shared else f"{lib}-static"
             self.cpp_info.components[lib].libs = [lib_name]
             self.cpp_info.components[lib].set_property("cmake_target_name", lib.replace("lanelet2_", "lanelet2::"))
