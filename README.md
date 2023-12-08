@@ -67,7 +67,13 @@ pip install lanelet2x
 
 ### Using Docker
 
-- [ ] **TODO**: We are currently working on the Docker container
+There is a Docker container from which you can test things out:
+
+```bash
+docker build -t lanelet2 .                    # builds a docker image named "lanelet2"
+docker run -it --rm lanelet2:latest           # starts the docker image
+python -c "import lanelet2"                   # quick check to see everything is fine
+```
 
 ### Manual installation
 
