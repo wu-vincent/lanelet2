@@ -16,6 +16,11 @@ if (SKBUILD)
 endif ()
 
 if (NOT BUILD_TESTING STREQUAL OFF)
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+        include(CodeCoverage)
+        append_coverage_compiler_flags()
+    endif ()
     enable_testing()
 endif ()
 

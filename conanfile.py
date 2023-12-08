@@ -57,7 +57,7 @@ class Lanelet2Conan(ConanFile):
     ]
     default_options.update((f"boost/*:without_{component}", True) for component in without_boost_components)
 
-    exports_sources = ["CMakeLists.txt", "lanelet2_*/*"]
+    exports_sources = ["CMakeLists.txt", "lanelet2_*/*", "cmake/*"]
 
     def requirements(self):
         self.requires("boost/[>=1.75.0 <=1.81.0]", headers=True, transitive_headers=True)

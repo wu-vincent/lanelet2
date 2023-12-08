@@ -27,7 +27,7 @@ jobs:
         if: steps.formatter.outputs.checks-failed > 0
         run: echo "Some files failed the formatting checks!" && exit 1
 
-  lint:
+  lint-and-coverage:
     needs: formatting
     runs-on: ubuntu-latest
     steps:
@@ -45,14 +45,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Setup LCOV
+        uses: hrishikesh-kadam/setup-lcov@v1
+
       - name: Create Conan build
         run: |
           conan profile detect --force
-          conan install . --output-folder=build --build=missing
+          conan install . --output-folder=build --build=missing -s build_type=Debug
 
       - name: Build with CMake
         run: |
-          cmake -S . -B build --preset conan-release -DCMAKE_BUILD_TYPE=Release
+          cmake -S . -B build --preset conan-debug -DCMAKE_BUILD_TYPE=Debug
           cmake --build build
 
       - name: Lint
@@ -64,9 +67,15 @@ jobs:
           tidy-checks: '' # force the use of .clang-tidy
           database: 'build'
 
-  #      - name: Fail?
-  #        if: steps.linter.outputs.checks-failed > 0
-  #        run: echo "Some files failed the linting checks!" && exit 1
+      - name: Run Tests and Generate Coverage Data
+        run: |
+          ctest --test-dir build
+          lcov -c -d build -o coverage.info
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test:
     name: Build on ${{ matrix.os }} (shared=${{ matrix.options.shared }})
