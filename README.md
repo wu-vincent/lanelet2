@@ -13,6 +13,9 @@ https://pypi.org/project/lanelet2x)
 https://pypi.org/project/lanelet2x)
 ![PyPI - Python Version](
 https://img.shields.io/pypi/pyversions/lanelet2x?logo=python&logoColor=white)
+[![Codecov - Code Coverage](https://img.shields.io/codecov/c/github/wu-vincent/lanelet2x?logo=codecov
+)](
+https://codecov.io/gh/wu-vincent/lanelet2x)
 
 ## Overview
 
