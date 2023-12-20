@@ -1,7 +1,7 @@
 # Lanelet2x
 
 Lanelet2x is a fork of lanelet2 library with all dependencies on ROS1, ROS2 or Catkin removed to create a standalone and
-cross-platform library.
+cross-platform library. It is now available on Windows, Linux and macOS.
 
 [![CI](https://github.com/wu-vincent/lanelet2x/actions/workflows/ci.yaml/badge.svg)](
 https://github.com/wu-vincent/lanelet2x/actions/workflows/ci.yaml)
